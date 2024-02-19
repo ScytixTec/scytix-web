@@ -1,4 +1,4 @@
-# Scytix-Web monorepos
+# Scytix-Web monorepo
 
 ### Setup 
 
