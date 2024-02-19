@@ -12,7 +12,30 @@ importers:
         specifier: latest
         version: 1.12.4
 
+  modules/tsconfig:
+    devDependencies:
+      '@tsconfig/node18':
+        specifier: ^18.2.2
+        version: 18.2.2
+
+  modules/typescript-config:
+    devDependencies:
+      '@tsconfig/create-react-app':
+        specifier: ^2.0.2
+        version: 2.0.2
+      '@tsconfig/node18':
+        specifier: ^18.2.2
+        version: 18.2.2
+
 packages:
+
+  /@tsconfig/create-react-app@2.0.2:
+    resolution: {integrity: sha512-PP+j4WWgypIvdY1+G5PgZIK5Kza/PpsbQgFQliDjlzXRXfQYmb6rB1ZUNUrWqAQ3Rr772CkE6BvTBI/j3cKr0A==}
+    dev: true
+
+  /@tsconfig/node18@18.2.2:
+    resolution: {integrity: sha512-d6McJeGsuoRlwWZmVIeE8CUA27lu6jLjvv1JzqmpsytOYYbVi1tHZEnwCNVOXnj4pyLvneZlFlpXUK+X9wBWyw==}
+    dev: true
 
   /turbo-darwin-64@1.12.4:
     resolution: {integrity: sha512-dBwFxhp9isTa9RS/fz2gDVk5wWhKQsPQMozYhjM7TT4jTrnYn0ZJMzr7V3B/M/T8QF65TbniW7w1gtgxQgX5Zg==}
