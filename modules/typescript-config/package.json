@@ -1,8 +1,8 @@
 {
-  "name": "@repo/typescript-config",
+  "name": "@scytix/typescript-config",
   "version": "1.0.0",
   "description": "Base TypeScript configurations.",
-  "author": "Asen Bozhilov",
+  "author": "Scytix",
   "devDependencies": {
     "@tsconfig/create-react-app": "^2.0.2",
     "@tsconfig/node18": "^18.2.2"
