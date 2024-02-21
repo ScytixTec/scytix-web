@@ -8,6 +8,15 @@ importers:
 
   .:
     devDependencies:
+      husky:
+        specifier: ^9.0.11
+        version: 9.0.11
+      lint-staged:
+        specifier: ^15.2.2
+        version: 15.2.2
+      prettier:
+        specifier: 3.2.5
+        version: 3.2.5
       turbo:
         specifier: latest
         version: 1.12.4
@@ -27,18 +36,9 @@ importers:
       '@types/node':
         specifier: ^20.11.19
         version: 20.11.19
-      husky:
-        specifier: ^9.0.11
-        version: 9.0.11
-      lint-staged:
-        specifier: ^15.2.2
-        version: 15.2.2
       nodemon:
         specifier: ^3.0.3
         version: 3.0.3
-      prettier:
-        specifier: 3.2.5
-        version: 3.2.5
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.11.19)(typescript@5.3.3)
