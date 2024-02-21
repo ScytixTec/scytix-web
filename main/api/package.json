@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "lint": "ts-standard"
   },
   "keywords": [],
   "author": "Scytix",
@@ -19,6 +20,7 @@
     "@types/node": "^20.11.19",
     "nodemon": "^3.0.3",
     "ts-node": "^10.9.2",
+    "ts-standard": "^12.0.2",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   }
