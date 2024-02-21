@@ -2,10 +2,10 @@
   "name": "api",
   "version": "1.0.0",
   "description": "Scytix rest API",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./index.ts"
+    "dev": "nodemon src/index.ts"
   },
   "keywords": [],
   "author": "Scytix",
