@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
+import { BasicControllerType } from "../../types";
 
-export function getStatus(req : Request, res: Response) {
-    res.send({
-        status: "OK"
-      });
-}
+export const getStatus: BasicControllerType = ({ req, res }) => {
+  res.send({
+    status: "OK",
+  });
+};

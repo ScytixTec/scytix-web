@@ -4,9 +4,6 @@ const router = Router();
 
 import { getStatus } from "./controllers/status";
 
-// const statusController = require('./controllers/status/index');
-
-router.get('/api/status', getStatus)
-
+router.get("/status", getStatus);
 
 export default router;
