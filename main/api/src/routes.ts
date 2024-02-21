@@ -1,12 +1,9 @@
 import { Router } from "express";
 
-const router = Router();
-
 import { getStatus } from "./controllers/status";
 
-// const statusController = require('./controllers/status/index');
+const router = Router();
 
-router.get('/api/status', getStatus)
-
+router.get("/status", getStatus);
 
 export default router;
