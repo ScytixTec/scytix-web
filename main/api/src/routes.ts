@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-const router = Router();
-
 import { getStatus } from "./controllers/status";
+
+const router = Router();
 
 router.get("/status", getStatus);
 
