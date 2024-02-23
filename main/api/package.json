@@ -4,7 +4,7 @@
   "description": "Scytix rest API",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "dev": "nodemon src/index.ts"
   },
   "keywords": [],
@@ -15,8 +15,14 @@
   "devDependencies": {
     "@scytix/typescript-config": "workspace:*",
     "@types/express": "^4.17.21",
-    "@types/node": "^20.11.19",
-    "nodemon": "^3.0.3",
+    "@types/jest": "^29.5.12",
+    "@types/jest-when": "^3.5.5",
+    "@types/node": "^20.11.20",
+    "http-status-codes": "^2.3.0",
+    "jest": "^29.7.0",
+    "jest-when": "^3.6.0",
+    "nodemon": "^3.1.0",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3"

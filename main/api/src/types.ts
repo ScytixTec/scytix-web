@@ -1,6 +1,3 @@
 import { Request, Response } from "express";
 
-export type BasicControllerType = (params: {
-  req: Request;
-  res: Response;
-}) => void;
+export type BasicControllerType = (req: Request, res: Response) => void;
