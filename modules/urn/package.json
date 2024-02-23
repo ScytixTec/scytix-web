@@ -9,7 +9,6 @@
   },
   "keywords": [],
   "author": "Scityx",
-  "license": "ISC",
   "devDependencies": {
     "@scytix/typescript-config": "workspace:*",
     "@types/jest": "^29.5.12",

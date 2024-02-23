@@ -21,8 +21,8 @@ describe("test validateUrn function ", () => {
     expect(validateUrn(urn, resource)).toEqual(true);
   });
 
-  it("should return undefined if Id is missing", () => {
-    const resource = "SOMETHING";
+  it("should return false for unsupported resource", () => {
+    const resource = "PROJECT";
     expect(validateUrn(urn, resource)).toEqual(false);
   });
 });

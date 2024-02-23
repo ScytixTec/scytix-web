@@ -1,21 +1,31 @@
+const urnNId = "scytix";
+
 export const UrnResource = {
   ARTICLE: "ARTICLE",
   PAGE: "PAGE",
   TESTIMONIAL: "TESTIMONIAL",
   PROJECT: "PROJECT",
   JOB: "JOB",
-};
+} as const;
 
-export const validateUrn = (urn: string, resource: string): Boolean => {
+type UrnResourceValue = (typeof UrnResource)[keyof typeof UrnResource];
+
+export const validateUrn = (
+  urn: string,
+  resource: UrnResourceValue,
+): Boolean => {
   if (UrnResource.hasOwnProperty(resource)) {
-    const pattern = new RegExp(`${resource}:[a-zA-Z0-9_-]+`);
+    const pattern = new RegExp(`^urn:${urnNId}:${resource}:[a-zA-Z0-9_-]+$`);
     return pattern.test(urn);
   }
 
   return false;
 };
 
-export const createUrn = (resource: string, id: string): undefined => {};
+export const createUrn = (
+  resource: UrnResourceValue,
+  id: string,
+): undefined => {};
 
 export const getUrnResource = (urn: string): string | undefined => {
   const UrnResource = urn.split(":")[2];
