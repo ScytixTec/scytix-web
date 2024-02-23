@@ -30,21 +30,25 @@ describe("get status", () => {
     expect(getStatus(req, res)).toEqual(undefined);
   });
 
-  // describe("get status with id", () => {
-  //   it("Should return an error for invalid paths", () => {
-  //     getStatusById(req, res);
-  //     expect(res.sendStatus).toHaveBeenCalledWith(404);
-  //   });
+  describe("get status with id", () => {
+    it("Should return an error for invalid paths", () => {
+      when(res.sendStatus)
+        .calledWith(StatusCodes.NOT_FOUND)
+        .mockReturnValue(res);
 
-  //   it("Should return the right Id when called with number", () => {
-  //     const req = { params: { id: 1 } } as unknown as Request;
-  //     getStatusById(req, res);
-  //     expect(res.send).toHaveBeenCalledTimes(1);
-  //     expect(res.send).toHaveBeenCalledWith({
-  //       statusId: 1,
-  //     });
-  //     expect(res.status).toHaveBeenCalledWith(200);
-  //     expect(getStatusById(req, res)).toEqual(undefined);
-  //   });
-  // });
+      expect(getStatusById(req, res)).toEqual(
+        res.sendStatus(StatusCodes.NOT_FOUND),
+      );
+    });
+
+    it("Should return the right Id when called with number", () => {
+      const req = { params: { id: 1 } } as unknown as Request;
+      const responseValue = { statusId: 1 };
+
+      when(res.status).calledWith(StatusCodes.OK).mockReturnValue(res);
+
+      when(res.send).calledWith(responseValue).mockReturnValue(res);
+      expect(getStatusById(req, res)).toEqual(undefined);
+    });
+  });
 });
