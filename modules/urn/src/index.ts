@@ -1,10 +1,3 @@
-import {
-  ValidateUrnType,
-  CreateUrnType,
-  GetUrnResourceType,
-  GetUrnRIdType,
-} from "./types";
-
 export const UrnResource = {
   ARTICLE: "ARTICLE",
   PAGE: "PAGE",
@@ -13,34 +6,28 @@ export const UrnResource = {
   JOB: "JOB",
 };
 
-export const validateUrn: ValidateUrnType = (urn, resource) => {
-  const UrnResource = urn.split(":")[2];
-  const UrnId = urn.split(":")[3];
-
-  if (UrnResource === resource && UrnId) {
-    return true;
+export const validateUrn = (urn: string, resource: string): Boolean => {
+  if (UrnResource.hasOwnProperty(resource)) {
+    const pattern = new RegExp(`${resource}:[a-zA-Z0-9_-]+`);
+    return pattern.test(urn);
   }
 
   return false;
 };
 
-export const createUrn: CreateUrnType = (resource, id) => {};
+export const createUrn = (resource: string, id: string): undefined => {};
 
-export const getUrnResource: GetUrnResourceType = (urn) => {
+export const getUrnResource = (urn: string): string | undefined => {
   const UrnResource = urn.split(":")[2];
 
   if (UrnResource) {
     return UrnResource;
   }
-  return null;
 };
 
-export const getUrnId: GetUrnRIdType = (urn) => {
+export const getUrnId = (urn: string): string | undefined => {
   const UrnId = urn.split(":")[3];
-
   if (UrnId) {
     return UrnId;
   }
-
-  return undefined;
 };
