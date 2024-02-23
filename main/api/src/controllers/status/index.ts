@@ -7,11 +7,3 @@ export const getStatus: BasicControllerType = (req, res) => {
     status: "OK",
   });
 };
-
-export const getStatusById: BasicControllerType = (req, res) => {
-  if (isNaN(+req.params.id)) return res.sendStatus(StatusCodes.NOT_FOUND);
-
-  res.status(StatusCodes.OK).send({
-    statusId: req.params.id,
-  });
-};
