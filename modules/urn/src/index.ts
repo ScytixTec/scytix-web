@@ -1,4 +1,4 @@
-const urnNId = "scytix";
+export const urnNId = "scytix";
 
 export const UrnResource = {
   ARTICLE: "ARTICLE",
@@ -8,7 +8,7 @@ export const UrnResource = {
   JOB: "JOB",
 } as const;
 
-type UrnResourceValue = (typeof UrnResource)[keyof typeof UrnResource];
+export type UrnResourceValue = (typeof UrnResource)[keyof typeof UrnResource];
 
 const urnRegex = new RegExp(
   `^urn:scytix:(?<resource>${Object.values(UrnResource).join("|")}):(?<id>[a-zA-Z0-9_-]+)$`,

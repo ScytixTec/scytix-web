@@ -1,23 +1,20 @@
-import { resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
-
-import { getUrnResource } from "../index";
+import { UrnResource, getUrnResource } from "../index";
 
 describe("test getUrnResource function ", () => {
-  beforeEach(() => {
-    resetAllWhenMocks();
-  });
+  const mappedUrns = Object.values(UrnResource).map((resource) => [
+    `urn:scytix:${resource}:123456789012`,
+    resource,
+  ]);
 
-  afterEach(() => {
-    verifyAllWhenMocksCalled();
-  });
-
-  it("should returns the resource for supported urn", () => {
-    const urn = "urn:scytix:ARTICLE:123456789012";
-    expect(getUrnResource(urn)).toEqual("ARTICLE");
-  });
+  test.each(mappedUrns)(
+    "should return the resource for supported urns",
+    (urn, resource) => {
+      expect(getUrnResource(urn)).toEqual(resource);
+    },
+  );
 
   it("should return undefined if Id is missing", () => {
-    const urn = "urn:scytix";
+    const urn = "urn:scytix:ARTICLE:";
     expect(getUrnResource(urn)).toEqual(undefined);
   });
 });

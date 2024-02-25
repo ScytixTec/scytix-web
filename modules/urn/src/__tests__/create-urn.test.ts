@@ -1,19 +1,13 @@
-import { resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
-
-import { createUrn } from "..";
+import { createUrn, UrnResource, urnNId } from "..";
 
 describe("test createUrn function ", () => {
-  const resource = "ARTICLE";
   const id = "12421412";
-  beforeEach(() => {
-    resetAllWhenMocks();
-  });
 
-  afterEach(() => {
-    verifyAllWhenMocksCalled();
-  });
-
-  it("should returns undefined", () => {
-    expect(createUrn(resource, id)).toEqual(undefined);
-  });
+  test.each(Object.values(UrnResource))(
+    "creates valid urn with the given resource and id",
+    (firstArgument) => {
+      const result = createUrn(firstArgument, id);
+      expect(result).toEqual(`urn:${urnNId}:${firstArgument}:${id}`);
+    },
+  );
 });
