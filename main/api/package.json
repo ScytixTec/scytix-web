@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --coverage",
     "deploy": "serverless deploy",
-    "dev": "serverless offline start --httpPort 8000 --stage dev"
+    "dev": "serverless offline start --httpPort 3000 --stage dev"
   },
   "keywords": [],
   "author": "Scytix",
@@ -27,7 +27,7 @@
     "serverless": "^3.38.0",
     "serverless-deployment-bucket": "^1.6.0",
     "serverless-domain-manager": "^7.3.6",
-    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-dynamodb": "^0.2.50",
     "serverless-esbuild": "^1.51.0",
     "serverless-offline": "^13.3.3",
     "serverless-plugin-ifelse": "^1.0.7",

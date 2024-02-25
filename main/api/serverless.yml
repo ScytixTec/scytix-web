@@ -12,7 +12,7 @@ provider:
 
 plugins:
   - serverless-esbuild
-  - serverless-dynamodb-local
+  - serverless-dynamodb
   - serverless-offline
   - serverless-deployment-bucket
   - serverless-domain-manager
@@ -36,6 +36,17 @@ custom:
     createRoute53IPv6Record: true
     endpointType: regional
     apiType: http
+
+  serverless-dynamodb:
+    stages:
+      - dev
+    start:
+      docker: true
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+      convertEmptyValues: true
 
 resources:
   Resources:
