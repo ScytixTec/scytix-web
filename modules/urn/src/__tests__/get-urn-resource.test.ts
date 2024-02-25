@@ -17,4 +17,9 @@ describe("test getUrnResource function ", () => {
     const urn = "urn:scytix:ARTICLE:";
     expect(getUrnResource(urn)).toEqual(undefined);
   });
+
+  it("should return undefined if resource is missing", () => {
+    const urn = "urn:scytix::123";
+    expect(getUrnResource(urn)).toEqual(undefined);
+  });
 });
