@@ -10,35 +10,47 @@ export const UrnResource = {
 
 type UrnResourceValue = (typeof UrnResource)[keyof typeof UrnResource];
 
+const urnRegex = new RegExp(
+  `^urn:scytix:(?<resource>${Object.values(UrnResource).join("|")}):(?<id>[a-zA-Z0-9_-]+)$`,
+  "i",
+);
+
+interface ParsedUrn {
+  resource: UrnResourceValue;
+  id: string;
+}
+
+export const parseUrn = (urn: string): ParsedUrn | undefined => {
+  const parsed = urnRegex.exec(urn);
+
+  if (parsed?.groups) {
+    const { resource, id } = parsed.groups;
+
+    return {
+      resource: resource.toUpperCase() as UrnResourceValue,
+      id,
+    };
+  }
+};
+
 export const validateUrn = (
   urn: string,
-  resource: UrnResourceValue,
+  resource?: UrnResourceValue,
 ): boolean => {
-  if (UrnResource.hasOwnProperty(resource)) {
-    const pattern = new RegExp(`^urn:${urnNId}:${resource}:[a-zA-Z0-9_-]+$`);
-    return pattern.test(urn);
+  const parsed = parseUrn(urn);
+
+  if (parsed) {
+    return !resource || resource === parsed.resource;
   }
 
   return false;
 };
 
 export const createUrn = (resource: UrnResourceValue, id: string): string => {
-  return `urn:scytix:${resource}:${id}`;
+  return `urn:${urnNId}:${resource}:${id}`;
 };
 
-export const getUrnResource = (urn: string): UrnResourceValue | undefined => {
-  const urnResource = urn.split(":")[2] as UrnResourceValue;
+export const getUrnResource = (urn: string): UrnResourceValue | undefined =>
+  parseUrn(urn)?.resource;
 
-  if (urnResource) {
-    if (validateUrn(urn, urnResource)) {
-      return urnResource;
-    }
-  }
-};
-
-export const getUrnId = (urn: string): string | undefined => {
-  const urnId = urn.split(":")[3];
-  if (urnId) {
-    return urnId;
-  }
-};
+export const getUrnId = (urn: string): string | undefined => parseUrn(urn)?.id;
