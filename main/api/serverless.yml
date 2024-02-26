@@ -1,0 +1,119 @@
+service: api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  region: eu-central-1
+  runtime: nodejs20.x
+  timeout: 15
+  stage: ${opt:stage}
+  deploymentBucket: 
+    name: scytix-deployment-bucket
+
+plugins:
+  - serverless-esbuild
+  - serverless-dynamodb
+  - serverless-offline
+  - serverless-deployment-bucket
+  - serverless-domain-manager
+  - serverless-plugin-ifelse
+
+custom:
+  serverlessIfElse:
+    - If: '"${self:provider.stage}" == "prod"'
+      Set:
+        custom.customDomain.domainName: api.scytix.com
+
+  esbuild:
+    sourcemap: true
+  
+  customDomain:
+    domainName: api.staging.scytix.com
+    certificateName: '*.scytix.com'
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    createRoute53IPv6Record: true
+    endpointType: regional
+    apiType: http
+
+  serverless-dynamodb:
+    stages:
+      - dev
+    start:
+      docker: true
+      port: 8000
+      inMemory: true
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+
+resources:
+  Resources:
+    AdminsUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: true
+          UnusedAccountValidityDays: 7
+          InviteMessageTemplate: 
+            EmailMessage: Your username is {username} and temporary password is {####}.  
+            EmailSubject: '[Scytix Admin] Your temporary password'
+            SMSMessage: Your username is {username} and temporary password is {####}.
+        UsernameConfiguration:
+          CaseSensitive: false
+        UsernameAttributes: 
+          - email
+        AutoVerifiedAttributes: 
+          - email
+        EmailConfiguration: 
+          ReplyToEmailAddress: donotreply@scytix.com
+        EmailVerificationMessage: Your verification code is {####}.
+        EmailVerificationSubject: '[Scytix Admin] Your verification code'
+        MfaConfiguration: OFF
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: false
+            RequireUppercase: true
+        UserPoolName: scytix-admin-${self:provider.stage}-user-pool               
+
+    AdminsUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: scytix-admin-${self:provider.stage}-user-pool-client
+        UserPoolId:
+          Ref: AdminsUserPool
+        GenerateSecret: true
+
+    DynamoTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeDefinition:
+            AttributeName: pk
+            AttributeType: S
+          - AttributeDefinition:
+            AttributeName: sk
+            AttributeType: S
+        BillingMode: PROVISIONED
+        KeySchema:
+          - KeySchema:
+            AttributeName: pk
+            KeyType: HASH
+          - KeySchema:
+            AttributeName: sk
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10
+        TableClass: STANDARD
+        TableName: scytix-${self:provider.stage}                 
+ 
+functions:
+  api:
+    handler: src/index.handler
+    events:
+      - httpApi: '*'
