@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "deploy": "turbo deploy",
     "dev": "turbo dev",
+    "test": "turbo test",
     "prepare": "husky"
   },
   "devDependencies": {
