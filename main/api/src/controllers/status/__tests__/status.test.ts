@@ -5,8 +5,16 @@ import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
 import { getStatus } from "..";
 
 describe("get status", () => {
+  jest.mock("../../../config", () => ({
+    config: {
+      version: "VERSION",
+    },
+  }));
   const req = {} as unknown as Request;
   const res = {
+    locals: {
+      version: "VERSION",
+    },
     send: jest.fn(),
     status: jest.fn(),
   } as unknown as Response;
