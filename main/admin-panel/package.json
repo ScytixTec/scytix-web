@@ -1,0 +1,26 @@
+{
+  "name": "react-admin-panel",
+  "version": "1.0.0",
+  "description": "React-admin with REST configuration, Cognito as authProvider and DynamoDB as data provider",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "ra-data-simple-rest": "^4.16.11",
+    "react": "^18.2.0",
+    "react-admin": "^4.16.11",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@scytix/typescript-config": "workspace:*",
+    "@types/node": "^18.19.18",
+    "@types/react": "^18.2.60",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.3.3",
+    "vite": "^4.5.2"
+  }
+}
