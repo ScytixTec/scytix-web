@@ -3,24 +3,31 @@
   "version": "1.0.0",
   "description": "React-admin with REST configuration, Cognito as authProvider and DynamoDB as data provider",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
   "dependencies": {
+    "amazon-cognito-identity-js": "^6.3.7",
+    "ra-auth-cognito": "^1.1.0",
     "ra-data-simple-rest": "^4.16.11",
     "react": "^18.2.0",
     "react-admin": "^4.16.11",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "yaml": "^2.4.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@modyfi/vite-plugin-yaml": "^1.1.0",
     "@scytix/typescript-config": "workspace:*",
     "@types/node": "^18.19.18",
     "@types/react": "^18.2.60",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
     "typescript": "^5.3.3",
-    "vite": "^4.5.2"
+    "vite": "^4.5.2",
+    "vite-plugin-node-polyfills": "^0.21.0"
   }
 }
