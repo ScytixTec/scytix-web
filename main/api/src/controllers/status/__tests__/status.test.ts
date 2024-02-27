@@ -4,6 +4,12 @@ import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
 
 import { getStatus } from "..";
 
+jest.mock("../../../config", () => ({
+  config: {
+    version: "VERSION",
+  },
+}));
+
 describe("get status", () => {
   const req = {} as unknown as Request;
   const res = {
@@ -11,7 +17,7 @@ describe("get status", () => {
     status: jest.fn(),
   } as unknown as Response;
 
-  const responseValue = { status: "OK" };
+  const responseValue = { status: "OK", version: "VERSION" };
 
   beforeEach(() => {
     resetAllWhenMocks();
