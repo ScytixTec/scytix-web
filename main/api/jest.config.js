@@ -7,4 +7,7 @@ module.exports = {
     "^.+\\.ts$": "ts-jest",
   },
   clearMocks: true,
+  testPathIgnorePatterns: [
+    ".config.ts"
+  ],
 };

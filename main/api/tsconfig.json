@@ -1,3 +1,6 @@
 {
-    "extends": "@scytix/typescript-config/tsconfigs/node-tsconfig.json"
+    "extends": "@scytix/typescript-config/tsconfigs/node-tsconfig.json",
+    "compilerOptions": {
+        "resolveJsonModule": true
+      }
 }
