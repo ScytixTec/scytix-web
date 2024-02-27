@@ -13,6 +13,6 @@ pnpm install
 Start the application in development mode by running:
 
 ```sh
-pnpm run dev
+turbo dev
 ```
 

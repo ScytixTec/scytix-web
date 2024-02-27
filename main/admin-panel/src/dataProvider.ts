@@ -1,3 +1,5 @@
 import simpleRestProvider from "ra-data-simple-rest";
 
-export const dataProvider = simpleRestProvider("test");
+import { config } from "./config";
+
+export const dataProvider = simpleRestProvider(config.cognito.apiUrl);
