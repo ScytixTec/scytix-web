@@ -4,6 +4,5 @@ import { BasicControllerType } from "../../types";
 import { config } from "../../config";
 
 export const getStatus: BasicControllerType = (req, res) => {
-  res.locals.version = config.version;
-  res.status(StatusCodes.OK).send({ status: "OK" });
+  res.status(StatusCodes.OK).send({ status: "OK", version: config.version });
 };

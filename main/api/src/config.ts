@@ -8,9 +8,7 @@ const ConfigSchema = z.object({
   version: z.string(),
 });
 
-type Config = z.infer<typeof ConfigSchema>;
-
-export const config: Config = ConfigSchema.parse({
+export const config = ConfigSchema.parse({
   ...yaml.parse(fs.readFileSync("./config.yml", "utf8")),
   version: packageJson.version,
 });
