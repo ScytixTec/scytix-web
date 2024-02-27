@@ -8,8 +8,8 @@ const ConfigSchema = z.object({
   cognito: z.object({
     userPoolId: z.string(),
     appClientId: z.string(),
-    apiUrl: z.string().url(),
   }),
+  apiUrl: z.string().url(),
 });
 
 export const config = ConfigSchema.parse({

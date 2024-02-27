@@ -1,4 +1,4 @@
-# scytix react-admin-panel
+# Scytix admin-panel
 
 ## Installation
 
