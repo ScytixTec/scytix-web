@@ -86,7 +86,7 @@ resources:
         ClientName: scytix-admin-${self:provider.stage}-user-pool-client
         UserPoolId:
           Ref: AdminsUserPool
-        GenerateSecret: true
+        GenerateSecret: false
 
     DynamoTable:
       Type: AWS::DynamoDB::Table
