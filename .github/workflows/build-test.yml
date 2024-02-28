@@ -11,6 +11,13 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
+      - name: Generate Config File
+        run: |
+          echo "cognito:" > ./main/admin-panel/config.yml
+          echo "  userPoolId: ${{ secrets.USER_POOL_ID }}" >> ./main/admin-panel/config.yml
+          echo "  appClientId: ${{ secrets.APP_CLIENT_ID }}" >> ./main/admin-panel/config.yml
+          echo "apiUrl: https://api.staging.scytix.com/" >> ./main/admin-panel/config.yml
+          echo "secret_key: ${{ secrets.MY_SECRET }}" > ./main/admin-panel/config.yml
       - name: Check out code
         uses: actions/checkout@v4
         with:
