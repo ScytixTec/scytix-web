@@ -2,7 +2,7 @@ name: build-test
 on:
   workflow_call:
   push:
-    branches: ["develop"]
+    branches: ["develop", "master"]
   pull_request:
     types: [opened, synchronize]
  
@@ -20,12 +20,10 @@ jobs:
       - uses: pnpm/action-setup@v3
         with:
           version: 8
-      - name: Generate Config File
+      - name: Generate Config Files
         run: |
-          echo "cognito:" > ./main/admin-panel/config.yml
-          echo "  userPoolId: ${{ secrets.USER_POOL_ID }}" >> ./main/admin-panel/config.yml
-          echo "  appClientId: ${{ secrets.APP_CLIENT_ID }}" >> ./main/admin-panel/config.yml
-          echo "apiUrl: https://api.staging.scytix.com/" >> ./main/admin-panel/config.yml
+          echo off > ./main/admin-panel/config.yml
+          echo off > ./main/api/config.yml
           
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
