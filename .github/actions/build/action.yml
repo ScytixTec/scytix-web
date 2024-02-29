@@ -1,0 +1,36 @@
+name: Build
+description: Builds, tests and archives the application
+
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v3
+      with:
+        version: 8
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: "pnpm"
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        echo off > ./main/admin-panel/config.yml
+        pnpm install
+
+    - name: Unit Tests
+      shell: bash
+      run: pnpm test
+
+    - name: Build
+      shell: bash
+      run: |
+        pnpm build
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: scytix-build
+        path: ./build  
