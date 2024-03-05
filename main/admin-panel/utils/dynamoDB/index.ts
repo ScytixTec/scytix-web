@@ -1,4 +1,4 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
   GetCommandInput,
@@ -15,8 +15,10 @@ export interface ScytixDynamoDbClient {
   putDynamoItem: (params: PutCommandInput) => void;
 }
 
-export const initializeDynamoDb = (): ScytixDynamoDbClient => {
-  const dynamoClient = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+export const initializeDynamoDb = (
+  config: DynamoDBClientConfig,
+): ScytixDynamoDbClient => {
+  const dynamoClient = DynamoDBDocumentClient.from(new DynamoDBClient(config));
 
   const getDynamoItem: ScytixDynamoDbClient["getDynamoItem"] = async <T>(
     params: GetCommandInput,
