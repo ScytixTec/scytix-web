@@ -63,12 +63,12 @@ export const initLogger = (config: LoggerConfig): ScytixLogger => {
       method(data);
 
   logger = {
-    debug: loggerHelper(logger.debug),
-    error: loggerHelper(logger.error),
-    info: loggerHelper(logger.info),
-    silly: loggerHelper(logger.silly),
-    warn: loggerHelper(logger.warn),
-    close: () => logger.close(),
+    debug: loggerHelper(winstonLogger.debug),
+    error: loggerHelper(winstonLogger.error),
+    info: loggerHelper(winstonLogger.info),
+    silly: loggerHelper(winstonLogger.silly),
+    warn: loggerHelper(winstonLogger.warn),
+    close: () => winstonLogger.close(),
   };
 
   return logger;
