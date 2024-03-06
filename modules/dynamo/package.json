@@ -1,5 +1,5 @@
 {
-  "name": "@scityx/dynamo",
+  "name": "@scytix/dynamo",
   "version": "1.0.0",
   "description": "Utility library for DynamoDB",
   "main": "index.ts",
@@ -8,7 +8,7 @@
     "dev": "ts-node src/index.ts"
   },
   "keywords": [],
-  "author": "Scityx",
+  "author": "Scytix",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.525.0",
     "@aws-sdk/lib-dynamodb": "^3.525.0"

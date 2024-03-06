@@ -1,7 +1,7 @@
 {
-  "name": "@scytix/urn",
+  "name": "@scytix/logger",
   "version": "1.0.0",
-  "description": "Utility library for URNs",
+  "description": "Utility library for ARNs",
   "main": "index.ts",
   "scripts": {
     "test": "jest --coverage",
@@ -19,5 +19,10 @@
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.525.0",
+    "winston": "^3.12.0",
+    "winston-cloudwatch": "^6.2.0"
   }
 }
