@@ -6,6 +6,7 @@ import {
   GetCommand,
   QueryCommandInput,
   QueryCommand,
+  QueryCommandOutput,
 } from "@aws-sdk/lib-dynamodb";
 
 export const getDynamoItem = async <T>(
@@ -25,11 +26,18 @@ export const queryDynamoTable = async <T>(
 ): Promise<T[] | undefined> => {
   console.log({ params });
 
-  const data = await dynamoClient.send(new QueryCommand(params));
+  let data: QueryCommandOutput;
+  let accumulated: T[] = [];
+  let ExclusiveStartKey: Record<string, any> | undefined;
 
-  console.log({ data });
-  if (data.Items) {
-    return data.Items as T[];
+  do {
+    data = await dynamoClient.send(new QueryCommand(params));
+    ExclusiveStartKey = data.LastEvaluatedKey;
+    accumulated = [...accumulated, ...((data.Items as T[]) ?? [])];
+  } while (data.Items || data.LastEvaluatedKey);
+
+  if (accumulated.length > 0) {
+    return accumulated;
   }
 };
 
