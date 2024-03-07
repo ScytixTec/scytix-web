@@ -12,17 +12,17 @@
   "dependencies": {
     "amazon-cognito-identity-js": "^6.3.7",
     "ra-auth-cognito": "^1.1.0",
-    "ra-data-simple-rest": "^4.16.11",
+    "ra-data-simple-rest": "^4.16.12",
     "react": "^18.2.0",
-    "react-admin": "^4.16.11",
+    "react-admin": "^4.16.12",
     "react-dom": "^18.2.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@modyfi/vite-plugin-yaml": "^1.1.0",
     "@scytix/typescript-config": "workspace:*",
-    "@types/node": "^18.19.19",
-    "@types/react": "^18.2.60",
+    "@types/node": "^18.19.21",
+    "@types/react": "^18.2.63",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
     "typescript": "^5.3.3",

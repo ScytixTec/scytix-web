@@ -1,0 +1,6 @@
+logger:
+  type: local
+  level: debug
+dynamo:
+  region: eu-central-1
+  endpoint: http://localhost:8000
