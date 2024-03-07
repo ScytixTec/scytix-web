@@ -1,4 +1,4 @@
-import { getLogger, ScytixLogger, initLogger } from "..";
+import { getLogger } from "..";
 
 describe("GetLogger", () => {
   it("Returns logger when Logger is defined", () => {

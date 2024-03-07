@@ -1,37 +1,22 @@
-jest.mock("winston");
+jest.mock("winston", () => ({
+  ...jest.requireActual("winston"),
+  createLogger: jest.fn(),
+  format: {
+    json: jest.fn(),
+  },
+  transports: {
+    Console: jest.fn(),
+  },
+}));
 jest.mock("winston-cloudwatch");
 
-import {
-  format,
-  Logger,
-  createLogger,
-  transports,
-  LoggerOptions,
-  level,
-} from "winston";
+import { format, createLogger, transports, Logger } from "winston";
 import { resetAllWhenMocks, verifyAllWhenMocksCalled, when } from "jest-when";
-import {
-  ConsoleTransportOptions,
-  Transports,
-} from "winston/lib/winston/transports";
 
 import { initLogger, LoggerConfig } from "..";
 
 describe("initLogger", () => {
-  const localConfig: LoggerConfig = {
-    type: "local",
-    level: "debug",
-  };
-
-  const awsConfig: LoggerConfig = {
-    type: "aws",
-    level: "debug",
-    region: "us-east-1",
-    serviceName: "test-service",
-    stage: "dev",
-    version: "1.0",
-  };
-
+  const logLevel = "debug";
   const mockedAddCommand = jest.fn();
 
   const winstonLogger = {
@@ -41,6 +26,13 @@ describe("initLogger", () => {
   beforeEach(() => {
     resetAllWhenMocks();
     jest.resetAllMocks();
+
+    when(createLogger)
+      .calledWith({
+        level: logLevel,
+        format: format.json(),
+      })
+      .mockReturnValue(winstonLogger);
   });
 
   afterEach(() => {
@@ -49,33 +41,26 @@ describe("initLogger", () => {
   });
 
   it("Should initialize local logger", () => {
-    const options = {} as ConsoleTransportOptions;
-    const transport = {} as Transports;
+    const localConfig: LoggerConfig = {
+      type: "local",
+      level: logLevel,
+    };
 
-    const jsonFormatMock = jest.fn(() => ({
-      transform: jest.fn(),
-    }));
+    when(transports.Console as unknown as jest.Mock)
+      .expectCalledWith({
+        handleExceptions: true,
+      })
+      .mockReturnValue({});
 
-    format.json = jsonFormatMock;
+    when(mockedAddCommand).expectCalledWith({}).mockReturnValue(undefined);
 
-    const createLoggerOptions = {
-      level: "debug",
-      format: format.json,
-    } as unknown as LoggerOptions;
-
-    when(createLogger as jest.Mock)
-      .calledWith(createLoggerOptions)
-      .mockReturnValue(winstonLogger);
-
-    (transports.Console as any) = jest.fn();
-
-    when(transport.Console as unknown as jest.Mock)
-      .expectCalledWith(options)
-      .mockReturnValue(transport);
-    when(winstonLogger.add)
-      .expectCalledWith(expect.any(transport))
-      .mockReturnValue(winstonLogger);
-
-    expect(initLogger(localConfig)).toEqual(winstonLogger);
+    expect(initLogger(localConfig)).toEqual({
+      debug: expect.any(Function),
+      error: expect.any(Function),
+      info: expect.any(Function),
+      silly: expect.any(Function),
+      warn: expect.any(Function),
+      close: expect.any(Function),
+    });
   });
 });
