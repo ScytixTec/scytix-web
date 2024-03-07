@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  DomainName:
+    Type: String
+    Description: 'Custom domain name for React application'
+  
+Resources:
+  ReactAppS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Ref 'DomainName'
+
+  CloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        ViewerCertificate:
+          AcmCertificateArn: 'arn:aws:acm:us-east-1:457989622830:certificate/22904251-9d3f-4ac1-8382-5a2b70596571'
+          SslSupportMethod: sni-only
+
+        Origins:
+          - DomainName: !GetAtt 'ReactAppS3Bucket.DomainName'
+            Id: 'S3Origin'
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+
+        Enabled: 'true'
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          TargetOriginId: 'S3Origin'
+          ForwardedValues:
+            QueryString: 'false'
+          ViewerProtocolPolicy: 'redirect-to-https'
+
+        PriceClass: 'PriceClass_100'
+
+  DomainRecordSetA:
+    Type: 'AWS::Route53::RecordSet'
+    Properties:
+      HostedZoneId: 'Z09777472QQIGH3V9F66S'
+      Name: !Ref 'DomainName'
+      Type: 'A'
+      AliasTarget:
+        DNSName: !GetAtt 'CloudFrontDistribution.DomainName'
+        HostedZoneId: 'Z2FDTNDATAQYW2'
+
+  DomainRecordSetAAAA:
+    Type: 'AWS::Route53::RecordSet'
+    Properties:
+      HostedZoneId: 'Z09777472QQIGH3V9F66S'
+      Name: !Ref 'DomainName'
+      Type: 'AAAA'
+      AliasTarget:
+        DNSName: !GetAtt 'CloudFrontDistribution.DomainName'
+        HostedZoneId: 'Z2FDTNDATAQYW2'

@@ -12,4 +12,7 @@ export default defineConfig({
     host: true,
   },
   base: "./",
+  build: {
+    outDir: "../../build/admin-panel",
+  },
 });
