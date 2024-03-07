@@ -9,9 +9,12 @@ jest.mock("winston", () => ({
   },
 }));
 jest.mock("winston-cloudwatch");
+jest.mock("crypto");
 
 import { format, createLogger, transports, Logger } from "winston";
 import { resetAllWhenMocks, verifyAllWhenMocksCalled, when } from "jest-when";
+import WinstonCloudwatch from "winston-cloudwatch";
+import { randomUUID } from "crypto";
 
 import { initLogger, LoggerConfig } from "..";
 
@@ -55,6 +58,35 @@ describe("initLogger", () => {
     when(mockedAddCommand).expectCalledWith({}).mockReturnValue(undefined);
 
     expect(initLogger(localConfig)).toEqual({
+      debug: expect.any(Function),
+      error: expect.any(Function),
+      info: expect.any(Function),
+      silly: expect.any(Function),
+      warn: expect.any(Function),
+      close: expect.any(Function),
+    });
+  });
+
+  it("Should initialize aws logger", () => {
+    const awsConfig: LoggerConfig = {
+      type: "aws",
+      level: logLevel,
+      region: "us-west-1",
+      serviceName: "test",
+      stage: "prod",
+      version: "1.00",
+    };
+
+    when(WinstonCloudwatch as unknown as jest.Mock)
+      .expectCalledWith({
+        awsRegion: awsConfig.region,
+        logGroupName: `${awsConfig.serviceName}-${awsConfig.stage}`,
+        logStreamName: `${awsConfig.version}-${randomUUID()}`,
+      })
+      .mockReturnValue({});
+
+    when(mockedAddCommand).expectCalledWith({}).mockReturnValue(undefined);
+    expect(initLogger(awsConfig)).toEqual({
       debug: expect.any(Function),
       error: expect.any(Function),
       info: expect.any(Function),
