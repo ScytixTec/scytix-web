@@ -1,15 +1,17 @@
-jest.mock("@aws-sdk/client-dynamodb");
-jest.mock("@aws-sdk/lib-dynamodb");
-
-import { DynamoDBClient, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb";
+import {
+  DynamoDBClient,
+  type DynamoDBClientConfig,
+} from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
   QueryCommand,
-  QueryCommandInput,
+  type QueryCommandInput,
 } from "@aws-sdk/lib-dynamodb";
 import { resetAllWhenMocks, verifyAllWhenMocksCalled, when } from "jest-when";
-
 import { initDynamoClient, queryDynamo } from "..";
+
+jest.mock("@aws-sdk/client-dynamodb");
+jest.mock("@aws-sdk/lib-dynamodb");
 
 describe("queryDynamo", () => {
   const params = {} as QueryCommandInput;

@@ -1,0 +1,12 @@
+{
+  "name": "@scytix/eslint-config",
+  "description": "eslint rules",
+  "license": "MIT",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Scytix",
+  "devDependencies": {
+    "@vercel/style-guide": "^6.0.0",
+    "eslint-config-turbo": "^1.12.5"
+  }
+}

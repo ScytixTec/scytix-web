@@ -1,1 +1,2 @@
+turbo lint
 pnpm exec lint-staged --allow-empty
