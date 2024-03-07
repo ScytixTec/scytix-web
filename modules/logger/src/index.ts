@@ -20,7 +20,7 @@ export interface LoggerMessage {
   message: string;
 }
 
-interface ScytixLogger {
+export interface ScytixLogger {
   debug: (data: LoggerMessage) => void;
   error: (data: LoggerMessage) => void;
   info: (data: LoggerMessage) => void;
