@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "jest --coverage",
     "deploy": "serverless deploy",
     "dev": "serverless offline start --httpPort 3000 --stage dev"
