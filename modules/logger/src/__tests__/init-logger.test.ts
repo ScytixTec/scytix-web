@@ -1,3 +1,10 @@
+import { randomUUID } from "node:crypto";
+import { format, createLogger, transports, type Logger } from "winston";
+import { resetAllWhenMocks, verifyAllWhenMocksCalled, when } from "jest-when";
+import WinstonCloudwatch from "winston-cloudwatch";
+
+import { initLogger, type LoggerConfig } from "..";
+
 jest.mock("winston", () => ({
   ...jest.requireActual("winston"),
   createLogger: jest.fn(),
@@ -9,20 +16,18 @@ jest.mock("winston", () => ({
   },
 }));
 jest.mock("winston-cloudwatch");
-jest.mock("crypto");
-
-import { format, createLogger, transports, Logger } from "winston";
-import { resetAllWhenMocks, verifyAllWhenMocksCalled, when } from "jest-when";
-import WinstonCloudwatch from "winston-cloudwatch";
-import { randomUUID } from "crypto";
-
-import { initLogger, LoggerConfig } from "..";
+jest.mock("node:crypto");
 
 describe("initLogger", () => {
   const logLevel = "debug";
   const mockedAddCommand = jest.fn();
 
   const winstonLogger = {
+    debug: jest.fn(),
+    error: jest.fn(),
+    info: jest.fn(),
+    silly: jest.fn(),
+    warn: jest.fn(),
     add: mockedAddCommand,
   } as unknown as Logger;
 
@@ -56,7 +61,6 @@ describe("initLogger", () => {
       .mockReturnValue({});
 
     when(mockedAddCommand).expectCalledWith({}).mockReturnValue(undefined);
-
     expect(initLogger(localConfig)).toEqual({
       debug: expect.any(Function),
       error: expect.any(Function),

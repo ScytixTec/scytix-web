@@ -4,4 +4,13 @@ module.exports = {
   "@typescript-eslint/unbound-method": ["error", {
     "ignoreStatic": true
   }],
+    "import/order": [
+      "error",
+      {
+        groups: [
+          ["builtin", "external", "internal"]
+        ],
+        "newlines-between": "always"
+      }
+    ],
 };

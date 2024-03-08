@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { type Request, type Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
 
@@ -10,11 +10,14 @@ jest.mock("../../../config", () => ({
   },
 }));
 
+const mockedSend = jest.fn();
+const mockedStatus = jest.fn();
+
 describe("get status", () => {
   const req = {} as unknown as Request;
   const res = {
-    send: jest.fn(),
-    status: jest.fn(),
+    send: mockedSend,
+    status: mockedStatus,
   } as unknown as Response;
 
   const responseValue = { status: "OK", version: "VERSION" };

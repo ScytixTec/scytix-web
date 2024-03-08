@@ -1,6 +1,6 @@
 import { z } from "zod";
 import yaml from "yaml";
-import fs from "fs";
+import fs from "node:fs";
 
 import * as packageJson from "../package.json";
 

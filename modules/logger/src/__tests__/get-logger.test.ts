@@ -1,4 +1,4 @@
-import { getLogger, LoggerConfig, initLogger } from "..";
+import { getLogger, type LoggerConfig, initLogger } from "..";
 
 describe("GetLogger", () => {
   const logLevel = "debug";
