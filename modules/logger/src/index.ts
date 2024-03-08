@@ -1,5 +1,5 @@
-import { randomUUID } from "crypto";
-import { createLogger, format, transports } from "winston";
+import { randomUUID } from "node:crypto";
+import { type Logger, createLogger, format, transports } from "winston";
 import WinstonCloudwatch = require("winston-cloudwatch");
 
 export type LoggerConfig =
@@ -58,7 +58,7 @@ export const initLogger = (config: LoggerConfig): ScytixLogger => {
   }
 
   const loggerHelper =
-    <T extends Function>(method: T) =>
+    <T extends (arg: LoggerMessage) => Logger>(method: T) =>
     (data: LoggerMessage) =>
       method(data);
 

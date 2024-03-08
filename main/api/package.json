@@ -4,6 +4,8 @@
   "description": "Scytix rest API",
   "main": "index.ts",
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "jest --coverage",
     "deploy": "serverless deploy",
     "dev": "serverless offline start --httpPort 3000 --stage dev"
@@ -20,6 +22,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@scytix/eslint-config": "workspace:*",
     "@scytix/typescript-config": "workspace:*",
     "@types/aws-lambda": "^8.10.136",
     "@types/express": "^4.17.21",

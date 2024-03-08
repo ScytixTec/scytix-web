@@ -1,20 +1,23 @@
-import { DynamoDBClient, DynamoDBClientConfig } from "@aws-sdk/client-dynamodb";
+import {
+  DynamoDBClient,
+  type DynamoDBClientConfig,
+} from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
   GetCommand,
-  GetCommandInput,
+  type GetCommandInput,
   PutCommand,
-  PutCommandInput,
-  QueryCommandInput,
+  type PutCommandInput,
+  type QueryCommandInput,
   QueryCommand,
 } from "@aws-sdk/lib-dynamodb";
 
 let ddbDocClient: DynamoDBDocumentClient;
 
-export type ResultSet<T> = {
+export interface ResultSet<T> {
   items: T[];
   lastEvaluatedKey?: Record<string, any>;
-};
+}
 
 export const initDynamoClient = (config: DynamoDBClientConfig): void => {
   ddbDocClient = DynamoDBDocumentClient.from(new DynamoDBClient(config));
@@ -48,7 +51,7 @@ export const queryDynamo = async <T>(
   const data = await getDynamoClient().send(new QueryCommand(params));
 
   return {
-    items: (data.Items as T[]) ?? [],
+    items: (data.Items ?? []) as T[],
     lastEvaluatedKey: data.LastEvaluatedKey,
   };
 };

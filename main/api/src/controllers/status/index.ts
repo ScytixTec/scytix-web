@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 
-import { BasicControllerType } from "../../types";
+import { type BasicControllerType } from "../../types";
 import { config } from "../../config";
 
 export const getStatus: BasicControllerType = (req, res) => {

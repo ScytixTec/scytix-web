@@ -5,6 +5,8 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "jest --coverage",
     "dev": "ts-node src/index.ts"
   },
@@ -15,6 +17,7 @@
     "@aws-sdk/lib-dynamodb": "^3.525.0"
   },
   "devDependencies": {
+    "@scytix/eslint-config": "workspace:*",
     "@scytix/typescript-config": "workspace:*",
     "@types/jest": "^29.5.12",
     "@types/jest-when": "^3.5.5",

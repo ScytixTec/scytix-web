@@ -1,15 +1,14 @@
-import { APIGatewayProxyHandlerV2 } from "aws-lambda";
+import { type APIGatewayProxyHandlerV2 } from "aws-lambda";
 import express from "express";
 import serverless from "serverless-http";
-
 import { initLogger } from "@scytix/logger";
 import { initDynamoClient } from "@scytix/dynamo";
 
 import { config } from "./config";
-import routes from "./routes";
+import { router } from "./routes";
 
 const app = express();
-app.use("/api", routes);
+app.use("/api", router);
 
 const expressHandler = serverless(app);
 

@@ -1,28 +1,37 @@
-jest.mock("winston", () => ({
-  ...jest.requireActual("winston"),
-  createLogger: jest.fn(),
-  format: {
-    json: jest.fn(),
-  },
-  transports: {
-    Console: jest.fn(),
-  },
-}));
-jest.mock("winston-cloudwatch");
-jest.mock("crypto");
-
-import { format, createLogger, transports, Logger } from "winston";
+import { randomUUID } from "node:crypto";
+import { format, createLogger, transports, type Logger } from "winston";
 import { resetAllWhenMocks, verifyAllWhenMocksCalled, when } from "jest-when";
 import WinstonCloudwatch from "winston-cloudwatch";
-import { randomUUID } from "crypto";
 
-import { initLogger, LoggerConfig } from "..";
+import { initLogger, type ScytixLogger, type LoggerConfig } from "..";
+
+jest.mock(
+  "winston",
+  () =>
+    ({
+      ...jest.requireActual("winston"),
+      createLogger: jest.fn(),
+      format: {
+        json: jest.fn(),
+      },
+      transports: {
+        Console: jest.fn(),
+      },
+    }) as ReturnType<typeof jest.mock>,
+);
+jest.mock("winston-cloudwatch");
+jest.mock("node:crypto");
 
 describe("initLogger", () => {
   const logLevel = "debug";
   const mockedAddCommand = jest.fn();
 
   const winstonLogger = {
+    debug: jest.fn(),
+    error: jest.fn(),
+    info: jest.fn(),
+    silly: jest.fn(),
+    warn: jest.fn(),
     add: mockedAddCommand,
   } as unknown as Logger;
 
@@ -56,14 +65,13 @@ describe("initLogger", () => {
       .mockReturnValue({});
 
     when(mockedAddCommand).expectCalledWith({}).mockReturnValue(undefined);
-
     expect(initLogger(localConfig)).toEqual({
-      debug: expect.any(Function),
-      error: expect.any(Function),
-      info: expect.any(Function),
-      silly: expect.any(Function),
-      warn: expect.any(Function),
-      close: expect.any(Function),
+      debug: expect.any(Function) as ScytixLogger["debug"],
+      error: expect.any(Function) as ScytixLogger["error"],
+      info: expect.any(Function) as ScytixLogger["info"],
+      silly: expect.any(Function) as ScytixLogger["silly"],
+      warn: expect.any(Function) as ScytixLogger["warn"],
+      close: expect.any(Function) as ScytixLogger["close"],
     });
   });
 
@@ -87,12 +95,12 @@ describe("initLogger", () => {
 
     when(mockedAddCommand).expectCalledWith({}).mockReturnValue(undefined);
     expect(initLogger(awsConfig)).toEqual({
-      debug: expect.any(Function),
-      error: expect.any(Function),
-      info: expect.any(Function),
-      silly: expect.any(Function),
-      warn: expect.any(Function),
-      close: expect.any(Function),
+      debug: expect.any(Function) as ScytixLogger["debug"],
+      error: expect.any(Function) as ScytixLogger["error"],
+      info: expect.any(Function) as ScytixLogger["info"],
+      silly: expect.any(Function) as ScytixLogger["silly"],
+      warn: expect.any(Function) as ScytixLogger["warn"],
+      close: expect.any(Function) as ScytixLogger["close"],
     });
   });
 });

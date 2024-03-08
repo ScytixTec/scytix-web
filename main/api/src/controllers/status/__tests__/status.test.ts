@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { type Request, type Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
 
@@ -10,11 +10,14 @@ jest.mock("../../../config", () => ({
   },
 }));
 
+const mockedSend = jest.fn();
+const mockedStatus = jest.fn();
+
 describe("get status", () => {
   const req = {} as unknown as Request;
   const res = {
-    send: jest.fn(),
-    status: jest.fn(),
+    send: mockedSend,
+    status: mockedStatus,
   } as unknown as Response;
 
   const responseValue = { status: "OK", version: "VERSION" };
@@ -28,9 +31,9 @@ describe("get status", () => {
   });
 
   it("should return the correct response", () => {
-    when(res.status).calledWith(StatusCodes.OK).mockReturnValue(res);
+    when(mockedStatus).calledWith(StatusCodes.OK).mockReturnValue(res);
 
-    when(res.send).calledWith(responseValue).mockReturnValue(res);
+    when(mockedSend).calledWith(responseValue).mockReturnValue(res);
 
     expect(getStatus(req, res)).toEqual(undefined);
   });
