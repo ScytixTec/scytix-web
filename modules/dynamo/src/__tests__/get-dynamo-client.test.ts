@@ -4,6 +4,7 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { resetAllWhenMocks, verifyAllWhenMocksCalled, when } from "jest-when";
+
 import { initDynamoClient, getDynamoClient } from "..";
 
 jest.mock("@aws-sdk/client-dynamodb");

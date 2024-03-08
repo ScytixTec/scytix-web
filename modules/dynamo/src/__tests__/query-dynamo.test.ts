@@ -8,6 +8,7 @@ import {
   type QueryCommandInput,
 } from "@aws-sdk/lib-dynamodb";
 import { resetAllWhenMocks, verifyAllWhenMocksCalled, when } from "jest-when";
+
 import { initDynamoClient, queryDynamo } from "..";
 
 jest.mock("@aws-sdk/client-dynamodb");

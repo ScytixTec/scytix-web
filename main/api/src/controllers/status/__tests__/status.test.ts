@@ -31,9 +31,9 @@ describe("get status", () => {
   });
 
   it("should return the correct response", () => {
-    when(res.status).calledWith(StatusCodes.OK).mockReturnValue(res);
+    when(mockedStatus).calledWith(StatusCodes.OK).mockReturnValue(res);
 
-    when(res.send).calledWith(responseValue).mockReturnValue(res);
+    when(mockedSend).calledWith(responseValue).mockReturnValue(res);
 
     expect(getStatus(req, res)).toEqual(undefined);
   });
