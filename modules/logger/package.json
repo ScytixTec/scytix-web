@@ -25,6 +25,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@scytix/eslint-config": "workspace:*",
     "@aws-sdk/client-cloudwatch-logs": "^3.525.0",
     "winston": "^3.12.0",
     "winston-cloudwatch": "^6.2.0"

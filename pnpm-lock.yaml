@@ -209,6 +209,9 @@ importers:
       '@aws-sdk/client-cloudwatch-logs':
         specifier: ^3.525.0
         version: 3.525.0
+      '@scytix/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
       winston:
         specifier: ^3.12.0
         version: 3.12.0
@@ -216,9 +219,6 @@ importers:
         specifier: ^6.2.0
         version: 6.2.0(@aws-sdk/client-cloudwatch-logs@3.525.0)(winston@3.12.0)
     devDependencies:
-      '@scytix/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
       '@scytix/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
