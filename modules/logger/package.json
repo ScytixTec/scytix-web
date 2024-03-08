@@ -13,6 +13,7 @@
   "keywords": [],
   "author": "Scytix",
   "devDependencies": {
+    "@scytix/eslint-config": "workspace:*",
     "@scytix/typescript-config": "workspace:*",
     "@types/jest": "^29.5.12",
     "@types/jest-when": "^3.5.5",
@@ -24,7 +25,6 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@scytix/eslint-config": "workspace:*",
     "@aws-sdk/client-cloudwatch-logs": "^3.525.0",
     "winston": "^3.12.0",
     "winston-cloudwatch": "^6.2.0"
