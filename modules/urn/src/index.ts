@@ -6,21 +6,14 @@ export const UrnResource = {
   TESTIMONIAL: "TESTIMONIAL",
   PROJECT: "PROJECT",
   JOB: "JOB",
+  APPLICATION: "APPLICATION",
 } as const;
 
 export type UrnResourceValue = (typeof UrnResource)[keyof typeof UrnResource];
 
-export const UrnComponent = {
-  APPLICATION: "APPLICATION",
-} as const;
-
-export type UrnComponentValue =
-  (typeof UrnComponent)[keyof typeof UrnComponent];
-
 export interface ScytixUrn {
   resource: UrnResourceValue;
   id?: string;
-  component?: UrnComponentValue;
   componentId?: string;
 }
 
@@ -28,7 +21,6 @@ const uuid4Format = String.raw`[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9
 const uuid4Regex = new RegExp(`^${uuid4Format}$`, "i");
 const resourceRegex = String.raw`(?<resource>${Object.values(UrnResource).join("|")})`;
 const idRegex = String.raw`(?<id>${uuid4Format})`;
-const componentRegex = String.raw`(?<component>${Object.values(UrnComponent).join("|")})`;
 const componentIdRegex = String.raw`(?<componentId>${uuid4Format})`;
 
 const urnRegex = new RegExp(
@@ -39,8 +31,7 @@ const urnRegex = new RegExp(
     `(`,
     `:${idRegex}`,
     `(`,
-    `#${componentRegex}`,
-    `:${componentIdRegex}`,
+    `#${componentIdRegex}`,
     `)?`,
     `)?`,
     `$`,
@@ -52,26 +43,18 @@ export const parseUrn = (urn: string): ScytixUrn | undefined => {
   const parsed = urnRegex.exec(urn);
 
   if (parsed?.groups) {
-    const { resource, id, component, componentId } = parsed.groups;
+    const { resource, id, componentId } = parsed.groups;
 
     return {
       resource: resource.toUpperCase() as UrnResourceValue,
       id,
-      ...(component && {
-        component: component.toUpperCase() as UrnComponentValue,
-        componentId,
-      }),
+      componentId,
     };
   }
 };
 
-export const createUrn = ({
-  resource,
-  id,
-  component,
-  componentId,
-}: ScytixUrn): string => {
-  if ((id && !resource) || (component && (!id || !componentId))) {
+export const createUrn = ({ resource, id, componentId }: ScytixUrn): string => {
+  if ((id && !resource) || (componentId && !id)) {
     throw Error("Invalid URN");
   }
 
@@ -88,8 +71,8 @@ export const createUrn = ({
     urn.push(`:${id}`);
   }
 
-  if (component) {
-    urn.push(`#${component.toLowerCase()}:${componentId}`);
+  if (componentId) {
+    urn.push(`#${componentId}`);
   }
 
   return urn.join("");

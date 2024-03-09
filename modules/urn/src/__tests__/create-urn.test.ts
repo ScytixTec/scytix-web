@@ -1,10 +1,4 @@
-import {
-  createUrn,
-  UrnResource,
-  urnNId,
-  UrnComponent,
-  type ScytixUrn,
-} from "..";
+import { createUrn, UrnResource, urnNId, type ScytixUrn } from "..";
 
 describe("test createUrn function ", () => {
   const uuid = "36b8f84d-df4e-4d49-b662-bcde71a8764f";
@@ -28,15 +22,14 @@ describe("test createUrn function ", () => {
     ).toEqual(`urn:scytix:article:${uuid}`);
   });
 
-  it("creates urn with resource component and component id", () => {
+  it("creates urn with resource and component id", () => {
     expect(
       createUrn({
         resource: UrnResource.ARTICLE,
         id: uuid,
-        component: UrnComponent.APPLICATION,
         componentId: uuid,
       }),
-    ).toEqual(`urn:scytix:article:${uuid}#application:${uuid}`);
+    ).toEqual(`urn:scytix:article:${uuid}#${uuid}`);
   });
 
   it("throws error if there is id but missing resource", () => {
@@ -47,12 +40,11 @@ describe("test createUrn function ", () => {
     ).toThrow("Invalid URN");
   });
 
-  it("throws error if there is id but missing resource", () => {
+  it("throws error if there is componentId but missing id", () => {
     expect(() =>
       createUrn({
         resource: UrnResource.ARTICLE,
-        id: uuid,
-        component: UrnComponent.APPLICATION,
+        componentId: uuid,
       }),
     ).toThrow("Invalid URN");
   });
@@ -71,7 +63,6 @@ describe("test createUrn function ", () => {
       createUrn({
         resource: UrnResource.ARTICLE,
         id: uuid,
-        component: UrnComponent.APPLICATION,
         componentId: "INVALID_UUID",
       }),
     ).toThrow("Id must be uuid v4");

@@ -1,4 +1,4 @@
-import { UrnComponent, UrnResource, parseUrn } from "..";
+import { UrnResource, parseUrn } from "..";
 
 describe("test parseUrn function", () => {
   const uuid = "36b8f84d-df4e-4d49-b662-bcde71a8764f";
@@ -25,13 +25,12 @@ describe("test parseUrn function", () => {
   );
 
   test.each(Object.values(UrnResource))(
-    "should return the right object for valid urns with all possible resources, id, component and componentId",
+    "should return the right object for valid urns with all possible resources, id and componentId",
     (resource) => {
-      const urn = `urn:scytix:${resource}:${uuid}#${UrnComponent.APPLICATION}:${uuid}`;
+      const urn = `urn:scytix:${resource}:${uuid}#${uuid}`;
       expect(parseUrn(urn)).toEqual({
         resource,
         id: uuid,
-        component: UrnComponent.APPLICATION,
         componentId: uuid,
       });
     },
@@ -58,20 +57,14 @@ describe("test parseUrn function", () => {
     expect(parseUrn(urn)).toEqual(undefined);
   });
 
-  it("should return undefined with invalid component", () => {
-    const urn = `urn:scytix:job:${uuid}#INVALID_COMPONENT:${uuid}`;
-
-    expect(parseUrn(urn)).toEqual(undefined);
-  });
-
   it("should return undefined if component id is missing", () => {
-    const urn = `urn:scytix:job:${uuid}#${UrnComponent.APPLICATION}:`;
+    const urn = `urn:scytix:job:${uuid}#`;
 
     expect(parseUrn(urn)).toEqual(undefined);
   });
 
   it("should return undefined with invalid component id", () => {
-    const urn = `urn:scytix:job:${uuid}#${UrnComponent.APPLICATION}:INVALID_UUID`;
+    const urn = `urn:scytix:job:${uuid}#INVALID_UUID`;
 
     expect(parseUrn(urn)).toEqual(undefined);
   });
