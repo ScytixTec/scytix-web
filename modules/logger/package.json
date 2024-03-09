@@ -13,6 +13,7 @@
   "keywords": [],
   "author": "Scytix",
   "devDependencies": {
+    "@scytix/eslint-config": "workspace:*",
     "@scytix/typescript-config": "workspace:*",
     "@types/jest": "^29.5.12",
     "@types/jest-when": "^3.5.5",

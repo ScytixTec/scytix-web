@@ -258,6 +258,9 @@ importers:
 
   modules/urn:
     devDependencies:
+      '@scytix/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
       '@scytix/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config

@@ -6,72 +6,74 @@ export const UrnResource = {
   TESTIMONIAL: "TESTIMONIAL",
   PROJECT: "PROJECT",
   JOB: "JOB",
+  APPLICATION: "APPLICATION",
 } as const;
 
 export type UrnResourceValue = (typeof UrnResource)[keyof typeof UrnResource];
 
+export interface ScytixUrn {
+  resource: UrnResourceValue;
+  id?: string;
+  componentId?: string;
+}
+
+const uuid4Format = String.raw`[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}`;
+const uuid4Regex = new RegExp(`^${uuid4Format}$`, "i");
+const resourceRegex = String.raw`(?<resource>${Object.values(UrnResource).join("|")})`;
+const idRegex = String.raw`(?<id>${uuid4Format})`;
+const componentIdRegex = String.raw`(?<componentId>${uuid4Format})`;
+
 const urnRegex = new RegExp(
-  `^urn:scytix:(?<resource>${Object.values(UrnResource).join("|")}):(?<id>[a-zA-Z0-9_-]+)$`,
+  [
+    `^`,
+    `urn:scytix:`,
+    resourceRegex,
+    `(`,
+    `:${idRegex}`,
+    `(`,
+    `#${componentIdRegex}`,
+    `)?`,
+    `)?`,
+    `$`,
+  ].join(""),
   "i",
 );
 
-interface ParsedUrn {
-  resource: UrnResourceValue;
-  id: string;
-}
-
-/**
- * The function `parseUrn` takes a URN string as input, extracts the resource and id components using a
- * regular expression, and returns them as a ParsedUrn object.
- */
-export const parseUrn = (urn: string): ParsedUrn | undefined => {
+export const parseUrn = (urn: string): ScytixUrn | undefined => {
   const parsed = urnRegex.exec(urn);
 
   if (parsed?.groups) {
-    const { resource, id } = parsed.groups;
+    const { resource, id, componentId } = parsed.groups;
 
     return {
       resource: resource.toUpperCase() as UrnResourceValue,
       id,
+      componentId,
     };
   }
 };
 
-/**
- * The function `validateUrn` checks if a given URN matches a specified resource value.
- * @returns boolean. If the URN is successfully parsed and a `resource` value is provided
- * returns true. If no `resource` value is provided or the parsed resource is undefined,
- * returns false.
- */
-export const validateUrn = (
-  urn: string,
-  resource?: UrnResourceValue,
-): boolean => {
-  const parsed = parseUrn(urn);
-
-  if (parsed) {
-    return !resource || resource === parsed.resource;
+export const createUrn = ({ resource, id, componentId }: ScytixUrn): string => {
+  if ((id && !resource) || (componentId && !id)) {
+    throw Error("Invalid URN");
   }
 
-  return false;
+  if (
+    (id && !uuid4Regex.test(id)) ||
+    (componentId && !uuid4Regex.test(componentId))
+  ) {
+    throw Error("Id must be uuid v4");
+  }
+
+  const urn = [`urn:${urnNId}:${resource.toLowerCase()}`];
+
+  if (id) {
+    urn.push(`:${id}`);
+  }
+
+  if (componentId) {
+    urn.push(`#${componentId}`);
+  }
+
+  return urn.join("");
 };
-
-/**
- * The function creates a URN (Uniform Resource Name) by combining a resource value and an ID.
- */
-export const createUrn = (resource: UrnResourceValue, id: string): string => {
-  return `urn:${urnNId}:${resource}:${id}`;
-};
-
-/**
- * The function `getUrnResource` extracts the resource value from a URN string using the `parseUrn`
- * function in TypeScript.
- */
-export const getUrnResource = (urn: string): UrnResourceValue | undefined =>
-  parseUrn(urn)?.resource;
-
-/**
- * The function `getUrnId` takes a URN string as input and returns the ID part of the URN if it can be
- * parsed.
- */
-export const getUrnId = (urn: string): string | undefined => parseUrn(urn)?.id;
