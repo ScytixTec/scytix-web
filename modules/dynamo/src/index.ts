@@ -10,6 +10,10 @@ import {
   type PutCommandInput,
   type QueryCommandInput,
   QueryCommand,
+  DeleteCommand,
+  type DeleteCommandInput,
+  UpdateCommand,
+  type UpdateCommandInput,
 } from "@aws-sdk/lib-dynamodb";
 
 let ddbDocClient: DynamoDBDocumentClient;
@@ -32,7 +36,7 @@ export const getDynamoClient = (): DynamoDBDocumentClient => {
 };
 
 export const getDynamoItem = async <T>(
-  params: GetCommandInput,
+  params: GetCommandInput
 ): Promise<T | undefined> => {
   const data = await getDynamoClient().send(new GetCommand(params));
 
@@ -46,7 +50,7 @@ export const putDynamoItem = async (params: PutCommandInput): Promise<void> => {
 };
 
 export const queryDynamo = async <T>(
-  params: QueryCommandInput,
+  params: QueryCommandInput
 ): Promise<ResultSet<T>> => {
   const data = await getDynamoClient().send(new QueryCommand(params));
 
@@ -54,4 +58,16 @@ export const queryDynamo = async <T>(
     items: (data.Items ?? []) as T[],
     lastEvaluatedKey: data.LastEvaluatedKey,
   };
+};
+
+export const deleteDynamoItem = async (
+  params: DeleteCommandInput
+): Promise<void> => {
+  await getDynamoClient().send(new DeleteCommand(params));
+};
+
+export const updateDynamoItem = async (
+  params: UpdateCommandInput
+): Promise<void> => {
+  await getDynamoClient().send(new UpdateCommand(params));
 };

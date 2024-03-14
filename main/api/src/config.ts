@@ -25,6 +25,9 @@ const ConfigSchema = z.object({
     region: z.string().optional(),
     endpoint: z.string().optional(),
   }),
+  table: z.object({
+    name: z.string()
+  })
 });
 
 export const config = ConfigSchema.parse({
