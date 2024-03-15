@@ -2,7 +2,7 @@ import { type Request, type Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
 
-import { getStatus } from "..";
+import { getStatusHandler } from "..";
 
 jest.mock("../../../config", () => ({
   config: {
@@ -35,6 +35,6 @@ describe("get status", () => {
 
     when(mockedSend).calledWith(responseValue).mockReturnValue(res);
 
-    expect(getStatus(req, res)).toEqual(undefined);
+    expect(getStatusHandler(req, res)).toEqual(undefined);
   });
 });

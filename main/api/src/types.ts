@@ -1,23 +1,26 @@
 import { type Request, type Response } from "express";
 
-interface IParam {
-  jobId: string
+export interface JobRequestParams {
+  jobId: string;
 }
 
-interface IJobBody {
-  title: string;
-  description: string;
-  isActive: boolean,
-}
-
-interface ILoginRequest extends Request {
-  body: IJobBody;
+interface JobRequest extends Request {
+  body: string;
 }
 
 export type BasicControllerType = (req: Request, res: Response) => void;
-export type JobControllerTypeWithBody = (req: ILoginRequest, res: Response) => void;
-export type JobControllerTypeWithJobId = (req: Request<IParam>, res: Response) => void;
-
+export type AsyncControllerType = (
+  req: Request,
+  res: Response,
+) => Promise<void>;
+export type JobControllerTypeWithBody = (
+  req: JobRequest,
+  res: Response,
+) => Promise<void>;
+export type JobControllerTypeWithJobId = (
+  req: Request<JobRequestParams>,
+  res: Response,
+) => Promise<void>;
 
 export interface Job {
   id: string;

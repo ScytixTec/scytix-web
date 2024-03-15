@@ -4,10 +4,11 @@ import {
   queryDynamo,
   getDynamoItem,
   deleteDynamoItem,
+  type ResultSet,
 } from "@scytix/dynamo";
 import { createUrn, UrnResource } from "@scytix/urn";
-import { type Job } from "../../types";
 
+import { type Job } from "../../types";
 import { config } from "../../config";
 
 export interface CreateJobParams {
@@ -20,18 +21,14 @@ export type UpdateJobParams = CreateJobParams & {
   dateAdded: string;
   dateUpdated: string;
   id: string;
-  pk: string;
-  sk: string;
 };
 
 const jobUrn = createUrn({ resource: UrnResource.JOB });
 
-export const createDynamoJob = async (
-  params: CreateJobParams
-): Promise<string> => {
+export const createJob = async (params: CreateJobParams): Promise<string> => {
   const id = randomUUID();
   const putCommandInput = {
-    TableName: config.table.name,
+    TableName: config.dynamo.tableName,
     Item: {
       ...params,
       pk: jobUrn,
@@ -45,28 +42,20 @@ export const createDynamoJob = async (
   return id;
 };
 
-export const getDynamoJobs = async () => {
+export const getJobs = async (): Promise<ResultSet<Job>> => {
   const queryCommandInput = {
-    TableName: config.table.name,
+    TableName: config.dynamo.tableName,
     KeyConditionExpression: `pk = :pkValue`,
     ExpressionAttributeValues: {
-      ":pkValue": jobUrn
+      ":pkValue": jobUrn,
     },
   };
-  const items = [];
-
-  try {
-    const data = await queryDynamo(queryCommandInput);
-    items.push(data.items)
-  } catch (error) {
-    
-  }
-  
+  return await queryDynamo(queryCommandInput);
 };
 
-export const getDynamoJob = async (id: string): Promise<Job | undefined> => {
+export const getJob = async (id: string): Promise<Job | undefined> => {
   const getCommandInput = {
-    TableName: config.table.name,
+    TableName: config.dynamo.tableName,
     Key: {
       pk: jobUrn,
       sk: createUrn({ resource: UrnResource.JOB, id }),
@@ -76,9 +65,9 @@ export const getDynamoJob = async (id: string): Promise<Job | undefined> => {
   return await getDynamoItem(getCommandInput);
 };
 
-export const deleteDynamoJob = async (id: string): Promise<void> => {
+export const deleteJob = async (id: string): Promise<void> => {
   const deleteCommandInput = {
-    TableName: config.table.name,
+    TableName: config.dynamo.tableName,
     Key: {
       pk: jobUrn,
       sk: createUrn({ resource: UrnResource.JOB, id }),
@@ -88,13 +77,13 @@ export const deleteDynamoJob = async (id: string): Promise<void> => {
   return await deleteDynamoItem(deleteCommandInput);
 };
 
-export const updateDynamoJob = async (params: UpdateJobParams): Promise<void> => {
+export const updateJob = async (params: UpdateJobParams): Promise<void> => {
   const putCommandInput = {
-    TableName: config.table.name,
+    TableName: config.dynamo.tableName,
     Item: {
       ...params,
       pk: jobUrn,
-      sk: createUrn({ resource: UrnResource.JOB, id: params.id}),
+      sk: createUrn({ resource: UrnResource.JOB, id: params.id }),
       dateUpdated: new Date().toISOString(),
     },
   };

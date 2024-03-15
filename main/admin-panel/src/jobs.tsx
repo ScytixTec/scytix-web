@@ -74,7 +74,7 @@ export const JobEdit = () => (
     <SimpleForm>
       <TextInput source="id" InputProps={{ disabled: true }} />
       <TextInput source="title" />
-      <TextInput source="description" multiline rows={5} />
+      <RichTextInput source="description" />
       <BooleanInput source="isActive" label="Active" />
     </SimpleForm>
   </Edit>

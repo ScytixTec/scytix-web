@@ -43,7 +43,7 @@ importers:
         version: 4.16.12(ra-core@4.16.12)
       ra-input-rich-text:
         specifier: ^4.16.12
-        version: 4.16.12(@mui/icons-material@5.15.13)(@mui/material@5.15.12)(ra-core@4.16.12)(ra-ui-materialui@4.16.12)(react-dom@18.2.0)(react@18.2.0)
+        version: 4.16.12(@mui/icons-material@5.15.13)(@mui/material@5.15.12)(ra-core@4.16.12)(ra-ui-materialui@4.16.13)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -102,9 +102,6 @@ importers:
       serverless-http:
         specifier: ^3.2.0
         version: 3.2.0
-      uuid4:
-        specifier: ^2.0.3
-        version: 2.0.3
       yaml:
         specifier: ^2.4.1
         version: 2.4.1
@@ -133,9 +130,6 @@ importers:
       '@types/node':
         specifier: ^20.11.27
         version: 20.11.27
-      '@types/uuid4':
-        specifier: ^2.0.3
-        version: 2.0.3
       esbuild:
         specifier: ^0.20.1
         version: 0.20.1
@@ -5366,10 +5360,6 @@ packages:
   /@types/triple-beam@1.3.5:
     resolution: {integrity: sha512-6WaYesThRMCl19iryMYP7/x2OVgCtbIVflDGFpWnb9irXI3UjYE4AzmYuiUKY1AJstGijoY+MgUszMgRxIYTYw==}
     dev: false
-
-  /@types/uuid4@2.0.3:
-    resolution: {integrity: sha512-/fyn8jzKzeL/wci7GOaz8TPjKapD+WJUBUCr/ED2xcUcx5fA9rZH2fDZiV2Z/a+040mp5Zi3dgIi/Vey/uQBxw==}
-    dev: true
 
   /@types/yargs-parser@21.0.3:
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
@@ -11524,7 +11514,7 @@ packages:
       - react-router-dom
     dev: false
 
-  /ra-input-rich-text@4.16.12(@mui/icons-material@5.15.13)(@mui/material@5.15.12)(ra-core@4.16.12)(ra-ui-materialui@4.16.12)(react-dom@18.2.0)(react@18.2.0):
+  /ra-input-rich-text@4.16.12(@mui/icons-material@5.15.13)(@mui/material@5.15.12)(ra-core@4.16.12)(ra-ui-materialui@4.16.13)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-jgny/bRaw66aiW6ARDhHC8NRfqZ+Erw992BkRpOE1tRJfx/j94YxSMyEkpTNe4zGKdi3mb5ARjx5JdWUYFgj+A==}
     peerDependencies:
       '@mui/icons-material': ^5.0.1
@@ -11550,7 +11540,7 @@ packages:
       '@tiptap/starter-kit': 2.2.4(@tiptap/pm@2.2.4)
       clsx: 1.2.1
       ra-core: 4.16.12(history@5.3.0)(react-dom@18.2.0)(react-hook-form@7.51.0)(react-router-dom@6.22.2)(react-router@6.22.2)(react@18.2.0)
-      ra-ui-materialui: 4.16.12(@mui/icons-material@5.15.13)(@mui/material@5.15.12)(ra-core@4.16.12)(react-dom@18.2.0)(react-hook-form@7.51.0)(react-is@18.2.0)(react-router-dom@6.22.2)(react-router@6.22.2)(react@18.2.0)
+      ra-ui-materialui: 4.16.13(@mui/icons-material@5.15.13)(@mui/material@5.15.12)(ra-core@4.16.12)(react-dom@18.2.0)(react-hook-form@7.51.0)(react-is@18.2.0)(react-router-dom@6.22.2)(react-router@6.22.2)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -11571,6 +11561,46 @@ packages:
 
   /ra-ui-materialui@4.16.12(@mui/icons-material@5.15.13)(@mui/material@5.15.12)(ra-core@4.16.12)(react-dom@18.2.0)(react-hook-form@7.51.0)(react-is@18.2.0)(react-router-dom@6.22.2)(react-router@6.22.2)(react@18.2.0):
     resolution: {integrity: sha512-x3jAZi90myJBGPlv8n3Iu9b1aEY5p4W03llUELnl/9ZS6/qHYUx3dJ0+JP5aVZGmL1pt/s6VtwzYChkbOnY6Lg==}
+    peerDependencies:
+      '@mui/icons-material': ^5.0.1
+      '@mui/material': ^5.0.2
+      ra-core: ^4.0.0
+      react: ^16.9.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
+      react-hook-form: '*'
+      react-is: ^16.9.0 || ^17.0.0 || ^18.0.0
+      react-router: ^6.1.0
+      react-router-dom: ^6.1.0
+    dependencies:
+      '@mui/icons-material': 5.15.13(@mui/material@5.15.12)(@types/react@18.2.63)(react@18.2.0)
+      '@mui/material': 5.15.12(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.63)(react-dom@18.2.0)(react@18.2.0)
+      autosuggest-highlight: 3.3.4
+      clsx: 1.2.1
+      css-mediaquery: 0.1.2
+      dompurify: 2.4.7
+      hotscript: 1.0.13
+      inflection: 1.12.0
+      jsonexport: 3.2.0
+      lodash: 4.17.21
+      prop-types: 15.8.1
+      query-string: 7.1.3
+      ra-core: 4.16.12(history@5.3.0)(react-dom@18.2.0)(react-hook-form@7.51.0)(react-router-dom@6.22.2)(react-router@6.22.2)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-dropzone: 12.1.0(react@18.2.0)
+      react-error-boundary: 3.1.4(react@18.2.0)
+      react-hook-form: 7.51.0(react@18.2.0)
+      react-is: 18.2.0
+      react-query: 3.39.3(react-dom@18.2.0)(react@18.2.0)
+      react-router: 6.22.2(react@18.2.0)
+      react-router-dom: 6.22.2(react-dom@18.2.0)(react@18.2.0)
+      react-transition-group: 4.4.5(react-dom@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - react-native
+    dev: false
+
+  /ra-ui-materialui@4.16.13(@mui/icons-material@5.15.13)(@mui/material@5.15.12)(ra-core@4.16.12)(react-dom@18.2.0)(react-hook-form@7.51.0)(react-is@18.2.0)(react-router-dom@6.22.2)(react-router@6.22.2)(react@18.2.0):
+    resolution: {integrity: sha512-ZsfThd7GsiU4wwD0lM19F/Sfh3FK2Nz40HrcHccbxHS+G5Gr/CqYz6tTR4yLe1ehONSx/YLfeUCYjOcurKXzIA==}
     peerDependencies:
       '@mui/icons-material': ^5.0.1
       '@mui/material': ^5.0.2
@@ -13370,10 +13400,6 @@ packages:
   /utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
-    dev: false
-
-  /uuid4@2.0.3:
-    resolution: {integrity: sha512-CTpAkEVXMNJl2ojgtpLXHgz23dh8z81u6/HEPiQFOvBc/c2pde6TVHmH4uwY0d/GLF3tb7+VDAj4+2eJaQSdZQ==}
     dev: false
 
   /uuid@8.0.0:
