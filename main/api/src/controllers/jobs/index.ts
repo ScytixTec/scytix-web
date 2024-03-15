@@ -1,5 +1,4 @@
 import { StatusCodes } from "http-status-codes";
-import { type ZodIssue } from "zod";
 
 import {
   type JobControllerTypeWithJobId,
@@ -20,47 +19,31 @@ import {
 export const createJobHandler: JobControllerTypeWithBody = async (req, res) => {
   const data = JSON.parse(req.body) as CreateJobParams;
 
-  const result = JobsSchema.safeParse(data);
+  const createJobParams = JobsSchema.safeParse(data);
 
-  if (!result.success) {
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .send({
-        errors: result.error.format((issue: ZodIssue) => ({
-          title: issue.message,
-          date: new Date(),
-          tags: { message: issue.code },
-        })),
-      })
-      .end();
+  if (!createJobParams.success) {
+    res.status(StatusCodes.BAD_REQUEST).send({
+      errors: createJobParams.error.format(),
+    });
+
+    return;
   }
 
-  try {
-    const id = await createJob(data);
-    res.status(StatusCodes.OK).json({ id });
-  } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send({ error });
-  }
+  res.status(StatusCodes.OK).json({
+    id: await createJob(data),
+  });
 };
 
 export const getJobsHandler: AsyncControllerType = async (req, res) => {
-  try {
-    await getJobs();
-    res.setHeader("Content-Range", "jobs 0-1/1");
-    res.status(StatusCodes.OK).json([]);
-  } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send({ status: "BAD_REQUEST" });
-  }
+  await getJobs();
+  res.setHeader("Content-Range", "jobs 0-1/1");
+  res.status(StatusCodes.OK).json([]);
 };
 
 export const getJobHandler: JobControllerTypeWithJobId = async (req, res) => {
   const jobId = req.params.jobId;
-  try {
-    const item = await getJob(jobId);
-    res.status(StatusCodes.OK).json({ id: jobId, ...item });
-  } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send({ status: "BAD_REQUEST" });
-  }
+  const item = await getJob(jobId);
+  res.status(StatusCodes.OK).json({ id: jobId, ...item });
 };
 
 export const deleteJobHandler: JobControllerTypeWithJobId = async (
@@ -68,35 +51,19 @@ export const deleteJobHandler: JobControllerTypeWithJobId = async (
   res,
 ) => {
   const jobId = req.params.jobId;
-  try {
-    const item = await deleteJob(jobId);
-    res.status(StatusCodes.OK).json({ item });
-  } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send({ status: "BAD_REQUEST" });
-  }
+  res.status(StatusCodes.OK).json(await deleteJob(jobId));
 };
 
 export const updateJobHandler: JobControllerTypeWithBody = async (req, res) => {
   const data = JSON.parse(req.body) as UpdateJobParams;
 
-  const result = JobsUpdateSchema.safeParse(data);
-  if (!result.success) {
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .send({
-        errors: result.error.format((issue: ZodIssue) => ({
-          title: issue.message,
-          date: new Date(),
-          tags: { message: issue.code },
-        })),
-      })
-      .end();
-  }
+  const updateJobParams = JobsUpdateSchema.safeParse(data);
+  if (!updateJobParams.success) {
+    res.status(StatusCodes.BAD_REQUEST).send({
+      errors: updateJobParams.error.format(),
+    });
 
-  try {
-    const updatedItem = await updateJob(data);
-    res.status(StatusCodes.OK).json(updatedItem);
-  } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).send({ status: "BAD_REQUEST" });
+    return;
   }
+  res.status(StatusCodes.OK).json(await updateJob(data));
 };

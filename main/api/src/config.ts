@@ -24,8 +24,8 @@ const ConfigSchema = z.object({
   dynamo: z.object({
     region: z.string().optional(),
     endpoint: z.string().optional(),
-    tableName: z.string(),
   }),
+  dynamoTableName: z.string(),
 });
 
 export const config = ConfigSchema.parse({

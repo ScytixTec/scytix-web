@@ -4,3 +4,4 @@ logger:
 dynamo:
   region: eu-central-1
   endpoint: http://localhost:8000
+dynamoTableName: scytix-dev

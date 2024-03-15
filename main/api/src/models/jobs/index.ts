@@ -28,7 +28,7 @@ const jobUrn = createUrn({ resource: UrnResource.JOB });
 export const createJob = async (params: CreateJobParams): Promise<string> => {
   const id = randomUUID();
   const putCommandInput = {
-    TableName: config.dynamo.tableName,
+    TableName: config.dynamoTableName,
     Item: {
       ...params,
       pk: jobUrn,
@@ -44,7 +44,7 @@ export const createJob = async (params: CreateJobParams): Promise<string> => {
 
 export const getJobs = async (): Promise<ResultSet<Job>> => {
   const queryCommandInput = {
-    TableName: config.dynamo.tableName,
+    TableName: config.dynamoTableName,
     KeyConditionExpression: `pk = :pkValue`,
     ExpressionAttributeValues: {
       ":pkValue": jobUrn,
@@ -55,7 +55,7 @@ export const getJobs = async (): Promise<ResultSet<Job>> => {
 
 export const getJob = async (id: string): Promise<Job | undefined> => {
   const getCommandInput = {
-    TableName: config.dynamo.tableName,
+    TableName: config.dynamoTableName,
     Key: {
       pk: jobUrn,
       sk: createUrn({ resource: UrnResource.JOB, id }),
@@ -67,7 +67,7 @@ export const getJob = async (id: string): Promise<Job | undefined> => {
 
 export const deleteJob = async (id: string): Promise<void> => {
   const deleteCommandInput = {
-    TableName: config.dynamo.tableName,
+    TableName: config.dynamoTableName,
     Key: {
       pk: jobUrn,
       sk: createUrn({ resource: UrnResource.JOB, id }),
@@ -79,7 +79,7 @@ export const deleteJob = async (id: string): Promise<void> => {
 
 export const updateJob = async (params: UpdateJobParams): Promise<void> => {
   const putCommandInput = {
-    TableName: config.dynamo.tableName,
+    TableName: config.dynamoTableName,
     Item: {
       ...params,
       pk: jobUrn,
