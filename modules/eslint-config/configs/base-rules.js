@@ -20,4 +20,11 @@ module.exports = {
       "checksVoidReturn": false
     }
   ],  
+  "@typescript-eslint/prefer-nullish-coalescing": [
+    "error",
+    {
+      "ignoreConditionalTests": true,
+      "ignoreTernaryTests": true,
+    },
+  ],
 };
