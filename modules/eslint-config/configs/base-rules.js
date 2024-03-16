@@ -1,21 +1,25 @@
 module.exports = {
+  "eslint-comments/require-description": "off",
   "@typescript-eslint/no-unnecessary-condition": "off",
   "@typescript-eslint/no-confusing-void-expression": "off",
-  "@typescript-eslint/unbound-method": [
-    "error", 
-    {
-      "ignoreStatic": true
-    },
-  ],
+  "@typescript-eslint/unbound-method": ["error", {
+    "ignoreStatic": true
+  }],
   "import/order": [
     "error",
     {
-      "groups": [
+      groups: [
         ["builtin", "external", "internal"]
       ],
       "newlines-between": "always"
     }
   ],
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksVoidReturn": false
+    }
+  ],  
   "@typescript-eslint/prefer-nullish-coalescing": [
     "error",
     {

@@ -25,6 +25,14 @@ const ConfigSchema = z.object({
     region: z.string().optional(),
     endpoint: z.string().optional(),
   }),
+  cognito: z.object({
+    userPoolId: z.string(),
+    clientId: z.string(),
+    scope: z.array(z.string()),
+  }),
+  cors: z.object({
+    allowedOrigins: z.string().array(),
+  }),
 });
 
 export const config = ConfigSchema.parse({

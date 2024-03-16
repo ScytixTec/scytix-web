@@ -4,3 +4,11 @@ logger:
 dynamo:
   region: eu-central-1
   endpoint: http://localhost:8000
+cognito: 
+  userPoolId: eu-central-1_D0XE5gPuO
+  clientId: 75to2g345m1p2fjvht2piqftdh
+  scope:
+    - aws.cognito.signin.user.admin
+cors:
+  allowedOrigins:
+    - http://localhost:5173/
