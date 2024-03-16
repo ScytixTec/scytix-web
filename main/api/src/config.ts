@@ -27,7 +27,8 @@ const ConfigSchema = z.object({
   }),
   cognito: z.object({
     userPoolId: z.string(),
-    appClientId: z.string(),
+    clientId: z.string(),
+    scope: z.array(z.string()),
   }),
   cors: z.object({
     allowedOrigins: z.string().array(),

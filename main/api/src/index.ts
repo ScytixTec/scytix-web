@@ -9,13 +9,13 @@ import { initCognitoClient } from "./models/cognito";
 import { config } from "./config";
 import { router } from "./routes";
 
-const options: cors.CorsOptions = {
-  origin: config.cors.allowedOrigins,
-};
-
 const app = express();
 app.use("/api", router);
-app.use(cors(options));
+app.use(
+  cors({
+    origin: config.cors.allowedOrigins,
+  }),
+);
 
 const expressHandler = serverless(app);
 
@@ -27,12 +27,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event, context) => {
     logger,
   });
 
-  initCognitoClient({
-    clientId: config.cognito.appClientId,
-    userPoolId: config.cognito.userPoolId,
-    tokenUse: "access",
-    scope: "read",
-  });
+  initCognitoClient();
 
   try {
     return await expressHandler(event, context);

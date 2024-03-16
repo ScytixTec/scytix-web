@@ -1,24 +1,20 @@
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-import {
-  type CognitoVerifyProperties,
-  type CognitoJwtVerifierSingleUserPool,
-} from "aws-jwt-verify/cognito-verifier";
 
-let jwtVerifier: CognitoJwtVerifierSingleUserPool<
-  CognitoVerifyProperties & { userPoolId: string }
->;
+import { config } from "../../config";
 
-export const initCognitoClient = (
-  config: CognitoVerifyProperties & { userPoolId: string },
-): void => {
-  jwtVerifier = CognitoJwtVerifier.create(config);
+let jwtVerifier: ReturnType<typeof CognitoJwtVerifier.create>;
+
+export const initCognitoClient = (): void => {
+  jwtVerifier = CognitoJwtVerifier.create({
+    ...config.cognito,
+    tokenUse: "access",
+  });
 };
 
-export const getCognitoClient = (): CognitoJwtVerifierSingleUserPool<
-  CognitoVerifyProperties & { userPoolId: string }
-> => {
+export const getCognitoClient = (): typeof jwtVerifier => {
   if (!jwtVerifier) {
     throw new Error("Cognito client is not initialized.");
   }
+
   return jwtVerifier;
 };

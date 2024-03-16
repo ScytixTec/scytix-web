@@ -1,11 +1,8 @@
 import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-import {
-  type CognitoJwtVerifierSingleUserPool,
-  type CognitoVerifyProperties,
-} from "aws-jwt-verify/cognito-verifier";
 
 import { initCognitoClient } from "..";
+import { config } from "../../../config";
 
 jest.mock(
   "aws-jwt-verify",
@@ -17,6 +14,15 @@ jest.mock(
       },
     }) as ReturnType<typeof jest.mock>,
 );
+jest.mock("../../../config", () => ({
+  config: {
+    cognito: {
+      userPoolId: "USER_POOL_ID",
+      clientId: "CLIENT_ID",
+      scope: "SCOPE",
+    },
+  },
+}));
 
 describe("test initCognitoClient function", () => {
   beforeEach(() => {
@@ -30,24 +36,17 @@ describe("test initCognitoClient function", () => {
   });
 
   it("Initializes cognito client", () => {
-    const config: CognitoVerifyProperties & { userPoolId: string } = {
-      userPoolId: "us-east-1_123456",
-      tokenUse: "access",
-      clientId: "5ra91i9p4trq42m2vnjs0pv06q",
-      scope: "read",
-    };
     const jwtVerifier = {
       verify: jest.fn(),
-    } as unknown as CognitoJwtVerifierSingleUserPool<
-      CognitoVerifyProperties & {
-        userPoolId: string;
-      }
-    >;
+    };
 
     when(CognitoJwtVerifier.create as jest.Mock)
-      .calledWith(config)
+      .calledWith({
+        ...config.cognito,
+        tokenUse: "access",
+      })
       .mockReturnValue(jwtVerifier);
 
-    expect(initCognitoClient(config)).toBe(undefined);
+    expect(initCognitoClient()).toBe(undefined);
   });
 });
