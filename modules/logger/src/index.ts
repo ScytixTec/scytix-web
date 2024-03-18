@@ -16,9 +16,10 @@ export type LoggerConfig =
       version: string;
     };
 
-export interface LoggerMessage {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export type LoggerMessage = {
   message: string;
-}
+} & Record<string, any>;
 
 export interface ScytixLogger {
   debug: (data: LoggerMessage) => void;

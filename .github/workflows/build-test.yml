@@ -20,16 +20,18 @@ jobs:
       - uses: pnpm/action-setup@v3
         with:
           version: 8
-      - name: Generate Config Files
-        run: |
-          echo off > ./main/admin-panel/config.yml
-          echo off > ./main/api/config.yml
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: "pnpm"
+
+      - name: Generate Config Files
+        shell: bash
+        run: |
+          cp ./main/admin-panel/config.original.yml ./main/admin-panel/config.yml
+          cp ./main/api/config.original.yml ./main/api/config.yml     
 
       - name: Install dependencies
         run: pnpm install
@@ -38,7 +40,7 @@ jobs:
         run: pnpm build
 
       - name: Linting
-        run: pnpm lint   
+        run: pnpm lint      
 
       - name: Test
         run: pnpm test

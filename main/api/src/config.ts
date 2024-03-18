@@ -26,6 +26,14 @@ const ConfigSchema = z.object({
     endpoint: z.string().optional(),
   }),
   dynamoTableName: z.string(),
+  cognito: z.object({
+    userPoolId: z.string(),
+    clientId: z.string(),
+    scope: z.array(z.string()),
+  }),
+  cors: z.object({
+    allowedOrigins: z.string().array(),
+  }),
 });
 
 export const config = ConfigSchema.parse({
