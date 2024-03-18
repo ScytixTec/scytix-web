@@ -1,10 +1,6 @@
 import { StatusCodes } from "http-status-codes";
+import { type Request, type Response } from "express";
 
-import {
-  type JobControllerTypeWithJobId,
-  type AsyncControllerType,
-  type JobControllerTypeWithBody,
-} from "../../types";
 import { JobsSchema, JobsUpdateSchema } from "./job-zod-schema";
 import {
   createJob,
@@ -16,7 +12,14 @@ import {
   updateJob,
 } from "../../models/jobs";
 
-export const createJobHandler: JobControllerTypeWithBody = async (req, res) => {
+interface StringifiedBodyRequest extends Request {
+  body: string;
+}
+
+export const createJobHandler = async (
+  req: StringifiedBodyRequest,
+  res: Response,
+): Promise<void> => {
   const data = JSON.parse(req.body) as CreateJobParams;
 
   const createJobParams = JobsSchema.safeParse(data);
@@ -34,27 +37,34 @@ export const createJobHandler: JobControllerTypeWithBody = async (req, res) => {
   });
 };
 
-export const getJobsHandler: AsyncControllerType = async (req, res) => {
+export const getJobsHandler = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
   await getJobs();
   res.setHeader("Content-Range", "jobs 0-1/1");
   res.status(StatusCodes.OK).json([]);
 };
 
-export const getJobHandler: JobControllerTypeWithJobId = async (req, res) => {
-  const jobId = req.params.jobId;
-  const item = await getJob(jobId);
-  res.status(StatusCodes.OK).json({ id: jobId, ...item });
+export const getJobHandler = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const jobItem = await getJob(req.params.jobId);
+  res.status(StatusCodes.OK).json(jobItem);
 };
 
-export const deleteJobHandler: JobControllerTypeWithJobId = async (
-  req,
-  res,
-) => {
-  const jobId = req.params.jobId;
-  res.status(StatusCodes.OK).json(await deleteJob(jobId));
+export const deleteJobHandler = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  res.status(StatusCodes.OK).json(await deleteJob(req.params.jobId));
 };
 
-export const updateJobHandler: JobControllerTypeWithBody = async (req, res) => {
+export const updateJobHandler = async (
+  req: StringifiedBodyRequest,
+  res: Response,
+): Promise<void> => {
   const data = JSON.parse(req.body) as UpdateJobParams;
 
   const updateJobParams = JobsUpdateSchema.safeParse(data);

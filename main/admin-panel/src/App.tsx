@@ -6,7 +6,9 @@ import { CognitoUserPool } from "amazon-cognito-identity-js";
 import { dataProvider } from "./dataProvider";
 
 import { config } from "./config";
-import { JobCreate, JobEdit, JobList } from "./jobs";
+import { JobCreate } from "./pages/jobs/job-create";
+import { JobEdit } from "./pages/jobs/job-edit";
+import { JobList } from "./pages/jobs/job-list";
 import { Dashboard } from "./Dashboard";
 
 const userPool = new CognitoUserPool({
@@ -25,7 +27,13 @@ export const App = () => {
       loginPage={Login}
       dashboard={Dashboard}
     >
-      <Resource name="jobs" list={JobList} create={JobCreate} show={ShowGuesser} edit={JobEdit}/>
+      <Resource
+        name="jobs"
+        list={JobList}
+        create={JobCreate}
+        show={ShowGuesser}
+        edit={JobEdit}
+      />
     </Admin>
   );
 };

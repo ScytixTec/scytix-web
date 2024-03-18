@@ -1,4 +1,4 @@
-import { Router, type RequestHandler } from "express";
+import { Router } from "express";
 
 import { getStatusHandler } from "./controllers/status";
 import {
@@ -11,9 +11,9 @@ import {
 
 export const router = Router();
 
-router.get("/status", getStatusHandler as unknown as RequestHandler);
-router.get("/jobs", getJobsHandler as unknown as RequestHandler);
-router.post("/jobs", createJobHandler as unknown as RequestHandler);
-router.get("/jobs/:jobId", getJobHandler as unknown as RequestHandler);
-router.delete("/jobs/:jobId", deleteJobHandler as unknown as RequestHandler);
-router.put("/jobs/:jobId", updateJobHandler as unknown as RequestHandler);
+router.get("/status", getStatusHandler);
+router.get("/jobs", getJobsHandler);
+router.post("/jobs", createJobHandler);
+router.get("/jobs/:jobId", getJobHandler);
+router.delete("/jobs/:jobId", deleteJobHandler);
+router.put("/jobs/:jobId", updateJobHandler);

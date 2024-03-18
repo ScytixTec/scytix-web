@@ -2,9 +2,8 @@ import { type Request, type Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
 
-import { getJob } from "../../../models/jobs";
+import { getJob, type Job } from "../../../models/jobs";
 import { getJobHandler } from "..";
-import { type JobRequestParams, type Job } from "../../../types";
 
 jest.mock("../../../models/jobs");
 
@@ -18,14 +17,14 @@ describe("Get job handler function", () => {
     params: {
       jobId: "test",
     },
-  } as unknown as Request<JobRequestParams>;
+  } as unknown as Request;
   const res = {
     send: mockedSend,
     status: mockedStatus,
     json: mockedJson,
   } as unknown as Response;
 
-  const responseValue = { ...Job, id: req.params.jobId };
+  const responseValue = { ...Job };
 
   beforeEach(() => {
     resetAllWhenMocks();

@@ -23,4 +23,10 @@ module.exports = {
       "ignoreTernaryTests": true,
     },
   ],
+  "@typescript-eslint/no-misused-promises": [
+    "error",
+    {
+      "checksVoidReturn": false
+    }
+  ],  
 };
