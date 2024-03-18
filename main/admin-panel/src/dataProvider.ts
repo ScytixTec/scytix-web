@@ -8,13 +8,13 @@ import { config } from "./config";
 const httpClient = (url: string, options: fetchUtils.Options = {}) => {
   const cognitoUser = userPool.getCurrentUser();
 
-  options.headers = (options.headers ?? new Headers()) as Headers;
-
   if (cognitoUser) {
-    cognitoUser.getSession((err: null, session: CognitoUserSession) => {
+    cognitoUser.getSession((_err: null, session: CognitoUserSession) => {
       if (session) {
-        const token = session.getAccessToken().getJwtToken();
-        //   options.headers?.set("Authorization", `${token}`);
+        options.user = {
+          authenticated: true,
+          token: session.getAccessToken().getJwtToken(),
+        };
       }
     });
   }
