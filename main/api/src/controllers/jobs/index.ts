@@ -11,6 +11,8 @@ import {
   type UpdateJobParams,
   updateJob,
 } from "../../models/jobs";
+import { mapValidationErrors } from "../../utils";
+import { ScytixError } from "../../errors";
 
 interface StringifiedBodyRequest extends Request {
   body: string;
@@ -25,9 +27,14 @@ export const createJobHandler = async (
   const createJobParams = JobsSchema.safeParse(data);
 
   if (!createJobParams.success) {
-    res.status(StatusCodes.BAD_REQUEST).send({
-      errors: createJobParams.error.format(),
-    });
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .send(
+        mapValidationErrors(
+          ScytixError.VALIDATION_ERROR,
+          createJobParams.error.flatten().fieldErrors,
+        ),
+      );
 
     return;
   }
