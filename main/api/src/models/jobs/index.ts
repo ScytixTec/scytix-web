@@ -31,7 +31,7 @@ export interface Job {
   timeUpdated: string;
 }
 
-const jobUrn = createUrn({ resource: UrnResource.JOB });
+export const jobUrn = createUrn({ resource: UrnResource.JOB });
 
 export const createJob = async (params: CreateJobParams): Promise<string> => {
   const id = randomUUID();
