@@ -10,7 +10,7 @@ import { JobEdit } from "./pages/jobs/job-edit";
 import { JobList } from "./pages/jobs/job-list";
 import { Dashboard } from "./Dashboard";
 
-export const App = () => {
+export function App(): JSX.Element {
   return (
     <Admin
       authProvider={authProvider}
@@ -28,4 +28,4 @@ export const App = () => {
       />
     </Admin>
   );
-};
+}

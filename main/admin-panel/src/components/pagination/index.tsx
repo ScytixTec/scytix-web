@@ -3,12 +3,12 @@ import { Button, Toolbar } from "@mui/material";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 
-export const Pagination = () => {
+export function Pagination(): JSX.Element | null {
   const { page, hasPreviousPage, hasNextPage, setPage } = useListContext();
   if (!hasPreviousPage && !hasNextPage) return null;
   return (
     <Toolbar>
-      {hasPreviousPage && (
+      {hasPreviousPage ? (
         <Button
           key="previous"
           onClick={() => setPage(page - 1)}
@@ -16,8 +16,8 @@ export const Pagination = () => {
         >
           Previous
         </Button>
-      )}
-      {hasNextPage && (
+      ) : null}
+      {hasNextPage ? (
         <Button
           key="next"
           onClick={() => setPage(page + 1)}
@@ -25,7 +25,7 @@ export const Pagination = () => {
         >
           Next
         </Button>
-      )}
+      ) : null}
     </Toolbar>
   );
-};
+}

@@ -1,11 +1,21 @@
 import simpleRestProvider from "ra-data-simple-rest";
-import { fetchUtils } from "react-admin";
-import { userPool } from "./authProvider";
-import { CognitoUserSession } from "amazon-cognito-identity-js";
+import { type DataProvider, fetchUtils } from "react-admin";
+import { type CognitoUserSession } from "amazon-cognito-identity-js";
 
+import { userPool } from "./authProvider";
 import { config } from "./config";
 
-const httpClient = (url: string, options: fetchUtils.Options = {}) => {
+interface JsonResponse<T> {
+  status: number;
+  headers: Headers;
+  body: string;
+  json: T;
+}
+
+const httpClient = <T>(
+  url: string,
+  options: fetchUtils.Options = {},
+): Promise<JsonResponse<T>> => {
   const cognitoUser = userPool.getCurrentUser();
 
   if (cognitoUser) {
@@ -22,4 +32,7 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-export const dataProvider = simpleRestProvider(config.apiUrl, httpClient);
+export const dataProvider: DataProvider = simpleRestProvider(
+  config.apiUrl,
+  httpClient,
+);
