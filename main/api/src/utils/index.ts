@@ -1,6 +1,6 @@
-import { ScytixError } from "../errors";
+import { type ScytixError } from "../errors";
 
-interface FieldErrors {
+export interface FieldErrors {
   message: ScytixError;
   errors: Record<string, string>;
 }

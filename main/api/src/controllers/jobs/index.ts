@@ -76,9 +76,14 @@ export const updateJobHandler = async (
 
   const updateJobParams = JobsUpdateSchema.safeParse(data);
   if (!updateJobParams.success) {
-    res.status(StatusCodes.BAD_REQUEST).send({
-      errors: updateJobParams.error.format(),
-    });
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .send(
+        mapValidationErrors(
+          ScytixError.VALIDATION_ERROR,
+          updateJobParams.error.flatten().fieldErrors,
+        ),
+      );
 
     return;
   }

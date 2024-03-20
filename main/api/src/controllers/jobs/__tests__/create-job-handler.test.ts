@@ -6,9 +6,13 @@ import { type ZodError } from "zod";
 import { createJob, type CreateJobParams } from "../../../models/jobs";
 import { createJobHandler } from "..";
 import { JobsSchema } from "../job-zod-schema";
+import { mapValidationErrors } from "../../../utils";
+import { ScytixError } from "../../../errors";
+import { type FieldErrors } from "../../../utils";
 
 jest.mock("../../../models/jobs");
 jest.mock("../job-zod-schema");
+jest.mock("../../../utils");
 
 const mockedSend = jest.fn();
 const mockedStatus = jest.fn();
@@ -62,10 +66,17 @@ describe("Get job handler function", () => {
   });
 
   it("should throw error when the zod parsing fails", async () => {
+    const fieldErrors = {
+      message: ScytixError.VALIDATION_ERROR,
+      errors: {
+        title: "wrong",
+      },
+    } as unknown as FieldErrors;
+
     const jobsParams = {
       success: false,
       error: {
-        format: jest.fn(),
+        flatten: jest.fn(() => fieldErrors),
       } as unknown as ZodError,
     };
 
@@ -77,9 +88,12 @@ describe("Get job handler function", () => {
 
     when(mockedStatus).calledWith(StatusCodes.BAD_REQUEST).mockReturnValue(res);
 
-    when(mockedSend)
-      .calledWith({ errors: jobsParams.error.format() })
-      .mockReturnValue(res);
+    when(mapValidationErrors as jest.Mock)
+      .calledWith(
+        ScytixError.VALIDATION_ERROR,
+        jobsParams.error.flatten().fieldErrors,
+      )
+      .mockResolvedValue(fieldErrors);
 
     await expect(createJobHandler(req, res)).resolves.toEqual(undefined);
   });
