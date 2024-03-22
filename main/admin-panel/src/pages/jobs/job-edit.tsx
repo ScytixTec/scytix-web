@@ -1,10 +1,33 @@
-import { SimpleForm, BooleanInput, TextInput, Edit } from "react-admin";
+import {
+  SimpleForm,
+  BooleanInput,
+  TextInput,
+  Edit,
+  Toolbar,
+  SaveButton,
+  useRecordContext,
+} from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
+
+import { type Job } from "./job-list";
+
+function CustomToolbar(): JSX.Element {
+  return (
+    <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+      <SaveButton />
+    </Toolbar>
+  );
+}
+
+function PageTitle(): JSX.Element {
+  const record = useRecordContext<Job>();
+  return <>Edit Job {record.title}</>;
+}
 
 export function JobEdit(): JSX.Element {
   return (
-    <Edit mutationMode="pessimistic">
-      <SimpleForm>
+    <Edit mutationMode="pessimistic" title={<PageTitle />}>
+      <SimpleForm toolbar={<CustomToolbar />}>
         <TextInput
           source="id"
           InputProps={{ disabled: true }}

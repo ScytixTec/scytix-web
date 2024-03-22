@@ -35,4 +35,5 @@ const httpClient = <T>(
 export const dataProvider: DataProvider = simpleRestProvider(
   config.apiUrl,
   httpClient,
+  "X-Total-Count",
 );

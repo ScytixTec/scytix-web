@@ -1,9 +1,9 @@
 import { randomUUID } from "node:crypto";
 import {
   putDynamoItem,
-  queryDynamo,
   getDynamoItem,
   deleteDynamoItem,
+  queryDynamo,
   type ResultSet,
 } from "@scytix/dynamo";
 import { createUrn, UrnResource } from "@scytix/urn";
@@ -11,8 +11,8 @@ import { createUrn, UrnResource } from "@scytix/urn";
 import { config } from "../../config";
 
 export interface CreateJobParams {
-  title: string;
   description: string;
+  title: string;
   isActive: boolean;
 }
 
@@ -61,7 +61,11 @@ export const getJobs = async (): Promise<ResultSet<Job>> => {
     },
   };
 
-  return await queryDynamo(queryCommandInput);
+  const jobs: ResultSet<Job> = await queryDynamo(queryCommandInput);
+
+  jobs.items.sort((a, b) => b.title.localeCompare(a.title));
+
+  return jobs;
 };
 
 export const getJob = async (id: string): Promise<Job | undefined> => {

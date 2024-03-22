@@ -48,9 +48,11 @@ export const getJobsHandler = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  await getJobs();
-  res.setHeader("Content-Range", "jobs 0-1/1");
-  res.status(StatusCodes.OK).json([]);
+  const data = await getJobs();
+
+  res.setHeader("X-Total-Count", `${data.items.length}`);
+  res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
+  res.status(StatusCodes.OK).json(data.items);
 };
 
 export const getJobHandler = async (
@@ -87,5 +89,6 @@ export const updateJobHandler = async (
 
     return;
   }
-  res.status(StatusCodes.OK).json(await updateJob(data));
+  await updateJob(data);
+  res.status(StatusCodes.OK).json(data);
 };
