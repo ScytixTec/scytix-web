@@ -11,9 +11,9 @@ export function JobCreate(): JSX.Element {
           fullWidth
           sx={{
             wordBreak: "break-word",
-            "& .RaRichTextInput-editorContent": {
-              minHeight: "200px",
-              maxHeight: "400px",
+            "& .tiptap.ProseMirror": {
+              minHeight: "100px",
+              maxHeight: "300px",
               overflowY: "auto",
             },
           }}

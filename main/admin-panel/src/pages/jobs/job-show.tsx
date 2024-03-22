@@ -7,9 +7,12 @@ import {
   TextField,
 } from "react-admin";
 
+import { Title } from "../../components/title";
+import { type Job } from "../../../types";
+
 export function JobShow(): JSX.Element {
   return (
-    <Show>
+    <Show title={<Title<Job> description="Job" />}>
       <SimpleShowLayout>
         <TextField source="sk" />
         <RichTextField source="description" />

@@ -5,18 +5,11 @@ import {
   InfiniteList,
   useInfinitePaginationContext,
   DeleteButton,
-  useRecordContext,
 } from "react-admin";
 import { Box, Button } from "@mui/material";
 
-export interface Job {
-  id: string;
-  title: string;
-  description: string;
-  isActive: boolean;
-  timeCreated: string;
-  timeUpdated: string;
-}
+import { type Job } from "../../../types";
+import { Title } from "../../components/title";
 
 function LoadMore(): JSX.Element | null {
   const { hasNextPage, fetchNextPage, isFetchingNextPage } =
@@ -30,11 +23,6 @@ function LoadMore(): JSX.Element | null {
   ) : null;
 }
 
-function DeleteTitle(): JSX.Element {
-  const record = useRecordContext<Job>();
-  return <>Delete Job: {record.title}</>;
-}
-
 export function JobList(): JSX.Element {
   return (
     <InfiniteList pagination={<LoadMore />}>
@@ -46,7 +34,7 @@ export function JobList(): JSX.Element {
         <EditButton />
         <DeleteButton
           mutationMode="pessimistic"
-          confirmTitle={<DeleteTitle />}
+          confirmTitle={<Title<Job> description="Delete" />}
         />
       </Datagrid>
     </InfiniteList>

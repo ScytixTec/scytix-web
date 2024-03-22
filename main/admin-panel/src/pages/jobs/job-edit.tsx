@@ -5,11 +5,11 @@ import {
   Edit,
   Toolbar,
   SaveButton,
-  useRecordContext,
 } from "react-admin";
 import { RichTextInput } from "ra-input-rich-text";
 
-import { type Job } from "./job-list";
+import { type Job } from "../../../types";
+import { Title } from "../../components/title";
 
 function CustomToolbar(): JSX.Element {
   return (
@@ -19,14 +19,9 @@ function CustomToolbar(): JSX.Element {
   );
 }
 
-function PageTitle(): JSX.Element {
-  const record = useRecordContext<Job>();
-  return <>Edit Job {record.title}</>;
-}
-
 export function JobEdit(): JSX.Element {
   return (
-    <Edit mutationMode="pessimistic" title={<PageTitle />}>
+    <Edit mutationMode="pessimistic" title={<Title<Job> description="Edit" />}>
       <SimpleForm toolbar={<CustomToolbar />}>
         <TextInput
           source="id"
