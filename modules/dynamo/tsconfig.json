@@ -1,3 +1,0 @@
-{
-    "extends": "@scytix/typescript-config/tsconfigs/node-tsconfig.json"
-}

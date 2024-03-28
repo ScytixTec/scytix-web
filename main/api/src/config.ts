@@ -21,10 +21,6 @@ const ConfigSchema = z.object({
         version: z.string(),
       }),
     ),
-  dynamo: z.object({
-    region: z.string().optional(),
-    endpoint: z.string().optional(),
-  }),
   cognito: z.object({
     userPoolId: z.string(),
     clientId: z.string(),
