@@ -50,9 +50,9 @@ export const getJobsHandler = async (
 ): Promise<void> => {
   const data = await getJobs();
 
-  res.setHeader("X-Total-Count", `${data.items.length}`);
+  res.setHeader("X-Total-Count", `${data.length}`);
   res.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
-  res.status(StatusCodes.OK).json(data.items);
+  res.status(StatusCodes.OK).json(data);
 };
 
 export const getJobHandler = async (

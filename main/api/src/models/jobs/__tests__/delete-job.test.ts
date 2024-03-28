@@ -1,21 +1,21 @@
 import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
-import { deleteDynamoItem } from "@scytix/dynamo";
-import { createUrn, UrnResource, type ScytixUrn } from "@scytix/urn";
 
-import { deleteJob, jobUrn } from "..";
+import { deleteJob } from "..";
+import { db } from "../../../db/config";
+import { deleteJobQuery } from "../../../queries/jobs";
 
-jest.mock("../../../config", () => ({
-  config: {
-    dynamoTableName: "TABLE",
+jest.mock("../../../db/config", () => ({
+  db: {
+    none: jest.fn(),
   },
 }));
 
-jest.mock("@scytix/urn");
-jest.mock("@scytix/dynamo");
-
 describe("Delete job function", () => {
   const id = "testId";
-  const scytixSkValue = "testSk" as unknown as ScytixUrn;
+
+  const mockedDbNone = jest.fn();
+
+  db.none = mockedDbNone;
 
   beforeEach(() => {
     resetAllWhenMocks();
@@ -26,21 +26,9 @@ describe("Delete job function", () => {
   });
 
   it("should return the correct response", async () => {
-    const getCommandInput = {
-      TableName: "TABLE",
-      Key: {
-        pk: jobUrn,
-        sk: scytixSkValue,
-      },
-    };
-    when(createUrn as unknown as jest.Mock)
-      .calledWith({ resource: UrnResource.JOB, id })
-      .mockReturnValue(scytixSkValue);
-
-    when(deleteDynamoItem as unknown as jest.Mock)
-      .expectCalledWith(getCommandInput)
+    when(mockedDbNone)
+      .expectCalledWith(deleteJobQuery, [id])
       .mockResolvedValue(undefined);
-
     await expect(deleteJob(id)).resolves.toEqual(undefined);
   });
 });

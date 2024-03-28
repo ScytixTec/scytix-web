@@ -1,20 +1,21 @@
 import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
-import { type ResultSet, queryDynamo } from "@scytix/dynamo";
 
-import { getJobs, type Job, jobUrn } from "..";
+import { getJobs, type Job } from "..";
+import { db } from "../../../db/config";
+import { getJobsQuery } from "../../../queries/jobs";
 
-jest.mock("../../../config", () => ({
-  config: {
-    dynamoTableName: "TABLE",
+jest.mock("../../../db/config", () => ({
+  db: {
+    any: jest.fn(),
   },
 }));
 
-jest.mock("@scytix/dynamo");
-
 describe("Get jobs function", () => {
-  const Jobs = {
-    items: [],
-  } as ResultSet<Job>;
+  const Jobs: Job[] = [];
+
+  const mockedDbAny = jest.fn();
+
+  db.any = mockedDbAny;
 
   beforeEach(() => {
     resetAllWhenMocks();
@@ -25,17 +26,7 @@ describe("Get jobs function", () => {
   });
 
   it("should return the correct response", async () => {
-    const queryCommandInput = {
-      TableName: "TABLE",
-      KeyConditionExpression: `pk = :pkValue`,
-      ExpressionAttributeValues: {
-        ":pkValue": jobUrn,
-      },
-    };
-
-    when(queryDynamo as unknown as jest.Mock)
-      .expectCalledWith(queryCommandInput)
-      .mockResolvedValue(Jobs);
+    when(mockedDbAny).expectCalledWith(getJobsQuery).mockResolvedValue(Jobs);
 
     await expect(getJobs()).resolves.toEqual(Jobs);
   });

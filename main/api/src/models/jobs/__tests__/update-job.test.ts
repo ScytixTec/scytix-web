@@ -1,19 +1,14 @@
 import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
-import { randomUUID } from "node:crypto";
-import { putDynamoItem } from "@scytix/dynamo";
-import { createUrn, UrnResource, type ScytixUrn } from "@scytix/urn";
 
-import { updateJob, jobUrn, type UpdateJobParams } from "..";
+import { updateJob, type UpdateJobParams } from "..";
+import { db } from "../../../db/config";
+import { updateJobQuery } from "../../../queries/jobs";
 
-jest.mock("../../../config", () => ({
-  config: {
-    dynamoTableName: "TABLE",
+jest.mock("../../../db/config", () => ({
+  db: {
+    none: jest.fn(),
   },
 }));
-
-jest.mock("@scytix/urn");
-jest.mock("@scytix/dynamo");
-jest.mock("node:crypto");
 
 jest
   .spyOn(global.Date.prototype, "toISOString")
@@ -21,8 +16,10 @@ jest
 
 describe("Update job function", () => {
   const params = {} as UpdateJobParams;
-  const id = randomUUID();
-  const scytixSkValue = "testSk" as unknown as ScytixUrn;
+
+  const mockedDbNone = jest.fn();
+
+  db.none = mockedDbNone;
 
   beforeEach(() => {
     resetAllWhenMocks();
@@ -33,24 +30,13 @@ describe("Update job function", () => {
   });
 
   it("should return the correct response", async () => {
-    const putCommandInput = {
-      TableName: "TABLE",
-      Item: {
+    when(mockedDbNone)
+      .expectCalledWith(updateJobQuery, {
         ...params,
-        pk: jobUrn,
-        sk: scytixSkValue,
         dateUpdated: "2023-09-06T11:54:47.050Z",
-        id,
-      },
-    };
-    when(createUrn as unknown as jest.Mock)
-      .calledWith({ resource: UrnResource.JOB, id })
-      .mockReturnValue(scytixSkValue);
-
-    when(putDynamoItem as unknown as jest.Mock)
-      .expectCalledWith(putCommandInput)
+      })
       .mockResolvedValue(undefined);
 
-    await expect(updateJob(params)).resolves.toEqual(id);
+    await expect(updateJob(params)).resolves.toEqual(undefined);
   });
 });

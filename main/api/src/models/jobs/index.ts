@@ -1,14 +1,11 @@
-import { randomUUID } from "node:crypto";
+import { db } from "../../db/config";
 import {
-  putDynamoItem,
-  getDynamoItem,
-  deleteDynamoItem,
-  queryDynamo,
-  type ResultSet,
-} from "@scytix/dynamo";
-import { createUrn, UrnResource } from "@scytix/urn";
-
-import { config } from "../../config";
+  createJobQuery,
+  getJobsQuery,
+  getJobQuery,
+  deleteJobQuery,
+  updateJobQuery,
+} from "../../queries/jobs";
 
 export interface CreateJobParams {
   description: string;
@@ -31,77 +28,29 @@ export interface Job {
   timeUpdated: string;
 }
 
-export const jobUrn = createUrn({ resource: UrnResource.JOB });
-
-export const createJob = async (params: CreateJobParams): Promise<string> => {
-  const id = randomUUID();
-  const putCommandInput = {
-    TableName: config.dynamoTableName,
-    Item: {
-      ...params,
-      pk: jobUrn,
-      sk: createUrn({ resource: UrnResource.JOB, id }),
-      dateAdded: new Date().toISOString(),
-      dateUpdated: new Date().toISOString(),
-      id,
-    },
-  };
-
-  await putDynamoItem(putCommandInput);
-
-  return id;
+export const createJob = async (params: CreateJobParams): Promise<number> => {
+  return await db.one(createJobQuery, {
+    ...params,
+    dateAdded: new Date().toISOString(),
+    dateUpdated: new Date().toISOString(),
+  });
 };
 
-export const getJobs = async (): Promise<ResultSet<Job>> => {
-  const queryCommandInput = {
-    TableName: config.dynamoTableName,
-    KeyConditionExpression: `pk = :pkValue`,
-    ExpressionAttributeValues: {
-      ":pkValue": jobUrn,
-    },
-  };
-
-  const jobs: ResultSet<Job> = await queryDynamo(queryCommandInput);
-
-  jobs.items.sort((a, b) => b.title.localeCompare(a.title));
-
-  return jobs;
+export const getJobs = async (): Promise<Job[]> => {
+  return await db.any(getJobsQuery);
 };
 
 export const getJob = async (id: string): Promise<Job | undefined> => {
-  const getCommandInput = {
-    TableName: config.dynamoTableName,
-    Key: {
-      pk: jobUrn,
-      sk: createUrn({ resource: UrnResource.JOB, id }),
-    },
-  };
-
-  return await getDynamoItem(getCommandInput);
+  return await db.one(getJobQuery, [id]);
 };
 
 export const deleteJob = async (id: string): Promise<void> => {
-  const deleteCommandInput = {
-    TableName: config.dynamoTableName,
-    Key: {
-      pk: jobUrn,
-      sk: createUrn({ resource: UrnResource.JOB, id }),
-    },
-  };
-
-  return await deleteDynamoItem(deleteCommandInput);
+  await db.none(deleteJobQuery, [id]);
 };
 
 export const updateJob = async (params: UpdateJobParams): Promise<void> => {
-  const putCommandInput = {
-    TableName: config.dynamoTableName,
-    Item: {
-      ...params,
-      pk: jobUrn,
-      sk: createUrn({ resource: UrnResource.JOB, id: params.id }),
-      dateUpdated: new Date().toISOString(),
-    },
-  };
-
-  await putDynamoItem(putCommandInput);
+  await db.none(updateJobQuery, {
+    ...params,
+    dateUpdated: new Date().toISOString(),
+  });
 };

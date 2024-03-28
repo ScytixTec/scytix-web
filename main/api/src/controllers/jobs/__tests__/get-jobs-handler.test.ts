@@ -1,7 +1,6 @@
 import { type Request, type Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { when, resetAllWhenMocks, verifyAllWhenMocksCalled } from "jest-when";
-import { type ResultSet } from "@scytix/dynamo";
 
 import { getJobs, type Job } from "../../../models/jobs";
 import { getJobsHandler } from "..";
@@ -14,9 +13,7 @@ const mockedJson = jest.fn();
 const mockedSetHeader = jest.fn();
 
 describe("Get jobs handler function", () => {
-  const Jobs = {
-    items: [],
-  } as ResultSet<Job>;
+  const Jobs: Job[] = [];
   const req = {
     params: {
       jobId: "test",
@@ -42,14 +39,14 @@ describe("Get jobs handler function", () => {
       .calledWith()
       .mockResolvedValue(Jobs);
     when(mockedSetHeader)
-      .calledWith("X-Total-Count", `${Jobs.items.length}`)
+      .calledWith("X-Total-Count", `${Jobs.length}`)
       .mockReturnValue(res);
     when(mockedSetHeader)
       .calledWith("Access-Control-Expose-Headers", "X-Total-Count")
       .mockReturnValue(res);
     when(mockedStatus).calledWith(StatusCodes.OK).mockReturnValue(res);
 
-    when(mockedJson).calledWith(Jobs.items).mockReturnValue(undefined);
+    when(mockedJson).calledWith(Jobs).mockReturnValue(undefined);
 
     await expect(getJobsHandler(req, res)).resolves.toEqual(undefined);
   });
